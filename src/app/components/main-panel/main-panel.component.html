@@ -1,0 +1,40 @@
+<!--<mat-grid-list cols="4" rowHeight="100px">
+  <mat-grid-tile
+    *ngFor="let tile of tiles"
+    [colspan]="tile.cols"
+    [rowspan]="tile.rows"
+    [style.background]="tile.color">
+    {{tile.text}}
+  </mat-grid-tile>
+</mat-grid-list>-->
+<div class="container">
+
+  <mat-grid-list [cols]="colsNumber" [rowHeight]="rowHeight" >
+      <mat-grid-tile
+                     *ngFor="let tile of tilesItems"
+                     [colspan]="1"
+                     [rowspan]="1"
+                     [style.background]="tile.color">
+        <div class="deviceItem-container">
+          <div class="device-data"><div>{{tile.text}}</div></div>
+          <div class="overlay">
+            <div class="text"> <mat-icon  (click)="setNumberOfDevicesOnScreen(1)" class="fullscreen">fullscreen</mat-icon></div>
+          </div>
+        </div>
+
+        <!--<div class="deviceItem-container">
+          <div class="device-data">{{tile.text}}</div>
+          <div class="overlay">
+            <div class="text">
+
+            </div>
+          </div>
+        </div>-->
+      </mat-grid-tile>
+
+
+    <div class="hide">I am shown when someone hovers over the div above.</div>
+  </mat-grid-list>
+</div>
+
+
