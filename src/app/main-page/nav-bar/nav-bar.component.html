@@ -13,3 +13,19 @@
     <button mat-menu-item (click)="setNumberOfDevicesOnScreen(4)">4</button>
   </mat-menu>
 </mat-toolbar>
+
+<!--
+<mat-nav-list class="p-0 mailbox-sidenav-list" perfectScrollbar>
+  <div *ngFor="let mail of mails | MailSearch : searchText" (click)="viewDetail(mail)">
+    <mat-list-item [ngClass]="{'unread': mail.unread, 'selected': mail.selected}">
+      <img *ngIf="mail.senderPhoto" matListAvatar  [src]="mail.senderPhoto">
+      <img *ngIf="!mail.senderPhoto" matListAvatar src="assets/img/users/default-user.jpg">
+      <div matLine fxLayout="row" fxLayoutAlign="space-between space-between">
+        <h4 class="text-truncate sender">{{mail.sender}}</h4>
+        <small>{{mail.date}}</small>
+      </div>
+      <p matLine class="text-truncate subject">{{mail.subject}}</p>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </div>
+</mat-nav-list>-->

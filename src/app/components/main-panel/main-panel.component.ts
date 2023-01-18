@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import {GeneralService} from "../../shared/general.service";
 import {map, Observable, of, take} from "rxjs";
-export interface Tile {
+export class Tile {
   color: string;
   cols: number;
   rows: number;

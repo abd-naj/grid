@@ -4,4 +4,7 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 $material-icons-font-path: '~material-icons/iconfont/';
-@import 'material-icons/iconfont/material-icons.scss';
+//@import 'material-icons/iconfont/material-icons.scss';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+@import "./app/styles/variables";

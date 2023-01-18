@@ -7,7 +7,8 @@ import {RouterModule, Routes} from "@angular/router";
 import {MainPanelComponent} from "../components/main-panel/main-panel.component";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatNativeDateModule} from "@angular/material/core";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {PipesModule} from "../shared/pips/pipes.module";
 
 const routes: Routes = [
   {path: '',
@@ -30,6 +31,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     MatNativeDateModule,
     ReactiveFormsModule,
+    FormsModule,
+    PipesModule
   ]
 })
 export class MainPageModule { }

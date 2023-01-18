@@ -16,24 +16,14 @@
                      [rowspan]="1"
                      [style.background]="tile.color">
         <div class="deviceItem-container">
-          <div class="device-data"><div>{{tile.text}}</div></div>
+          <div class="device-data">
+            <div>{{tile.text}}</div>
+          </div>
           <div class="overlay">
             <div class="text"> <mat-icon  (click)="setNumberOfDevicesOnScreen(1)" class="fullscreen">fullscreen</mat-icon></div>
           </div>
         </div>
-
-        <!--<div class="deviceItem-container">
-          <div class="device-data">{{tile.text}}</div>
-          <div class="overlay">
-            <div class="text">
-
-            </div>
-          </div>
-        </div>-->
       </mat-grid-tile>
-
-
-    <div class="hide">I am shown when someone hovers over the div above.</div>
   </mat-grid-list>
 </div>
 

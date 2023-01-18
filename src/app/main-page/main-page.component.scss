@@ -1,0 +1,143 @@
+@import "../styles/variables";
+
+.mailbox{
+  padding: 0;
+  .search{
+    margin: 0 14px;
+    width: 100%;
+    border: none;
+    border-radius: 2px;
+    padding: 6px;
+    outline: none;
+  }
+  .mail-body{
+    padding: 16px;
+  }
+  .empty{
+    mat-icon{
+      font-size: 220px;
+      height: 220px;
+      width: 220px;
+      opacity: 0.4;
+    }
+    p{
+      font-size: 18px;
+      opacity: 0.8;
+    }
+  }
+}
+.mailbox-sidenav{
+  width: $sidenav-width;
+  border-right: 1px solid transparent;
+  overflow: hidden;
+}
+.mailbox-content{
+  //display: flex;
+  //place-content: space-around;
+  //align-items: center;
+  height: calc(100vh - (#{$toolbar-height} + #{$inner-sidenav-content-padding}*2 + -31px));
+  overflow-y: auto;
+  .mat-line{
+    white-space: unset;
+  }
+  .subject{
+    font-weight: 500;
+  }
+}
+.mailbox-sidenav-list{
+  height: calc(100vh - (#{$toolbar-height} + #{$inner-sidenav-content-padding}*2 + -21px));
+  overflow-y: auto;
+  .sender{
+    font-weight: 400;
+  }
+  .subject{
+    font-size: 13px;
+  }
+  .unread .mat-line, .unread .sender {
+    font-weight: bold;
+  }
+  .selected{
+    background: rgba(0,0,0,.15);
+  }
+}
+.toolbar{
+  display: flex;
+  place-content: space-between;
+  align-items: center;
+  height: 40px;
+}
+@media (max-width: 575px) {
+  .mailbox-sidenav{
+    width: 150px;
+  }
+}
+
+////
+mat-grid-tile {
+  background: lightblue;
+}
+.container{
+  height: calc(100% - (#{6px} * 1));
+  position: relative;
+
+}
+.hide {
+  display: none;
+}
+
+/*.deviceItem:hover + .hide {
+  display: block;
+  color: red;
+  border:2px solid green;
+}*/
+
+.deviceItem-container {
+  //position: relative;
+  //width: 50%;
+  height: 100%;
+  width: 100%;
+}
+.device-data {
+  //display: block;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  place-content: space-around center;
+  align-items: center;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: rgba(136, 135, 135, 0.66);
+}
+
+.deviceItem-container:hover .overlay {
+  opacity: 1;
+}
+
+.text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.fullscreen{
+  font-size: 70px;
+  height: 70px;
+  width: 70px;
+  cursor: pointer;
+}
+
