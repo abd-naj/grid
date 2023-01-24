@@ -1,0 +1,37 @@
+.parent {
+  //display: grid;
+  //grid-template-columns: 25% 25% 25% 25%;
+  //grid-template-rows:  25% 25%  25% 25%;
+  //grid-gap: 1px;
+  //place-items: center;
+  border: 1px solid;
+  height: 100%;
+}
+.measurement{
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  .measurement-unit{
+    display: flex;
+    font-size: larger;
+    font-weight: bolder;
+    flex: 1 1 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+    justify-content: flex-start;
+    padding: 8px;
+  }
+  .measurement-value{
+    display: flex;
+    font-size: xxx-large;
+    font-weight: bolder;
+    flex: 1 1 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+    line-height: initial;
+    justify-content: center;
+    padding: 8px;
+  }
+}

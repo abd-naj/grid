@@ -104,6 +104,10 @@ mat-grid-tile {
   display: flex;
   place-content: space-around center;
   align-items: center;
+  app-single-device{
+    width: 100%;
+    height: 100%;
+  }
 }
 .overlay {
   position: absolute;

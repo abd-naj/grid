@@ -1,0 +1,50 @@
+<div class="parent">
+  <mat-grid-list cols="4" rowHeight="6.5%">
+    <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[0].color">
+      <div style="color: green" class="measurement">
+      <app-chart [canvasId]="'canvas2'"></app-chart>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[1].color">
+      <div style="color: green" class="measurement">
+        <div class="measurement-unit">bpm</div>
+        <div class="measurement-value">{{tiles[1].text}}</div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[2].color">
+      <div style="color: white" class="measurement">
+        <div class="measurement-unit">mmHG</div>
+        <div class="measurement-value">{{tiles[2].text}}</div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[3].color">
+      <div style="color: red" class="measurement">
+        <app-chart [canvasId]="'canvas1'"></app-chart>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[4].color">
+      <div style="color: red" class="measurement">
+        <div class="measurement-unit">CO2</div>
+        <div class="measurement-value">{{tiles[4].text}}</div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[5].color">
+      <div style="color: white" class="measurement">
+        <div class="measurement-unit">bpm</div>
+        <div class="measurement-value">{{tiles[5].text}}</div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[6].color">
+      <div style="color: yellow" class="measurement">
+<!--        <app-chart></app-chart>-->
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[7].color">
+      <div style="color: yellow" class="measurement">
+        <div class="measurement-unit">bpm</div>
+        <div class="measurement-value">{{tiles[7].text}}</div>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</div>

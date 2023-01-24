@@ -4,6 +4,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {DeviceData, GeneralService, IDeviceData} from "../shared/general.service";
 import {ConnectStreamService} from "./connect-stream.service";
 import {Tile} from "../components/main-panel/main-panel.component";
+import {ConnectMqttServerService} from "./connect-mqtt-server.service";
 
 
 @Component({
@@ -48,10 +49,27 @@ export class MainPageComponent implements OnInit {
     // public appSettings:AppSettings,
     public formBuilder: FormBuilder,
     public snackBar: MatSnackBar,
-    private generalService: GeneralService,
+    public generalService: GeneralService,
+    private connectMqttServerService: ConnectMqttServerService,
     private mailboxService:ConnectStreamService) {
     // this.settings = this.appSettings.settings;
-    this.getMails();
+    this.generalService.devices$.subscribe((value: any[]) => {
+      console.log(value);
+      this.deviceData = value;
+      console.log(this.deviceData);
+      value.forEach((item, index) => {
+        this.generalService.threads$[index]?.threads?.subscribe(value => {
+          console.log(value);
+        });
+      })
+    });
+    this.connectMqttServerService.createConnection().then((value) => {
+      console.log(value);
+      this.connectMqttServerService.doSubscribe().subscribe(value1 => {
+        // console.log(value1);
+      });
+    });
+    // this.getMails();
     this.generalService.numberOfDevicesOnScreen.subscribe((value: number) => {
       this.numberOfDevicesOnScreen = value;
       switch (value) {
@@ -86,12 +104,13 @@ export class MainPageComponent implements OnInit {
   ngOnInit() {
     this.tilesItemsCtrl.valueChanges.subscribe((value: any) => {
       console.log(value)
-      if (value.length <= this.numberOfDevicesOnScreen) {
-        this.tilesItems = value;
-      }
+      this.tilesItems = value;
+      // if (value.length <= this.numberOfDevicesOnScreen) {
+      //   this.tilesItems = value;
+      // }
     })
     if(window.innerWidth <= 992){
-      this.sidenavOpen = false;
+      // this.sidenavOpen = false;
     }
   }
 

@@ -23,10 +23,10 @@
           <mat-nav-list class="p-0 mailbox-sidenav-list">
               <mat-selection-list [formControl]="tilesItemsCtrl">
                 <mat-list-option
-                  *ngFor="let mail of deviceData | deviceFilter : searchText"
+                  *ngFor="let mail of generalService.devices$ | async"
                   (click)="viewDetail(mail)" [value]="mail">
                   <div matLine>
-                    <small>{{mail.userId}}</small>
+                    <small>{{mail}}</small>
                   </div>
                 </mat-list-option>
               </mat-selection-list>
@@ -65,15 +65,15 @@
                 <mat-grid-tile
                   *ngFor="let tile of tilesItems; index as i"
                   [colspan]="1"
-                  [rowspan]="1"
-                  [style.background]="tile.color">
+                  [rowspan]="1">
                   <div class="deviceItem-container">
                     <div class="device-data">
-                      <div>{{deviceData[i].userId}}</div>
+<!--                      <div>{{deviceData[i].userId}}</div>-->
+                      <app-single-device></app-single-device>
                     </div>
-                    <div class="overlay">
-                      <div class="text"> <mat-icon  (click)="setNumberOfDevicesOnScreen(1)" class="fullscreen">fullscreen</mat-icon></div>
-                    </div>
+<!--                    <div class="overlay">-->
+<!--                      <div class="text"> <mat-icon  (click)="setNumberOfDevicesOnScreen(1)" class="fullscreen">fullscreen</mat-icon></div>-->
+<!--                    </div>-->
                   </div>
                 </mat-grid-tile>
               </mat-grid-list>
