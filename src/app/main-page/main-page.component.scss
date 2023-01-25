@@ -152,4 +152,7 @@ mat-grid-tile {
   width: 70px;
   cursor: pointer;
 }
+.mat-grid-list{
+  height: calc(100% - (#{6px} * 1)) !important;
+}
 
