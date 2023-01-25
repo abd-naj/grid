@@ -120,7 +120,7 @@ export class MainPageComponent implements OnInit {
 
   @HostListener('window:resize')
   public onWindowResize():void {
-    (window.innerWidth <= 992) ? this.sidenavOpen = false : this.sidenavOpen = true;
+    // (window.innerWidth <= 992) ? this.sidenavOpen = false : this.sidenavOpen = true;
   }
 
   public getMails(){

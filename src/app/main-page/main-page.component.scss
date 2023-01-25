@@ -75,6 +75,7 @@
 ////
 mat-grid-tile {
   background: lightblue;
+  border: 0.1px solid black;
 }
 .container{
   height: calc(100% - (#{6px} * 1));
