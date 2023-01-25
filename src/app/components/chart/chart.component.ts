@@ -1,16 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {
-  Chart,
-  LineElement,
-  PointElement,
-  registerables
-} from 'chart.js';
-import StreamingPlugin from "chartjs-plugin-streaming";
+import {Chart} from 'chart.js';
 import 'chartjs-adapter-moment';
-Chart.register(...registerables);
-Chart.register(LineElement);
-Chart.register(PointElement);
-Chart.register(StreamingPlugin);
+
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
@@ -35,7 +26,7 @@ ngOnChanges(changes: SimpleChanges) {
 }
 
   ngOnInit(): void {
-    window.onload = () => {
+    setTimeout(() => {
       const chartColors = {
         red: 'rgb(255, 99, 132)',
         orange: 'rgb(255, 159, 64)',
@@ -51,13 +42,13 @@ ngOnChanges(changes: SimpleChanges) {
         data: {
           datasets: [
             {
-            label: 'Dataset 2 (cubic interpolation)',
-            backgroundColor: chartColors.blue,
-            borderColor: chartColors.blue,
-            fill: false,
-            cubicInterpolationMode: 'monotone',
-            data: []
-          }]
+              label: 'Dataset 2 (cubic interpolation)',
+              backgroundColor: chartColors.blue,
+              borderColor: chartColors.blue,
+              fill: false,
+              cubicInterpolationMode: 'monotone',
+              data: []
+            }]
         },
         options: {
           title: {
@@ -109,7 +100,7 @@ ngOnChanges(changes: SimpleChanges) {
         this.chart = new Chart(this.ctx, config);
       }, 1000)
 
-    };
+    }, 1000)
 
   }
 
