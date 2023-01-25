@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Chart} from 'chart.js';
 import 'chartjs-adapter-moment';
 
@@ -8,17 +8,18 @@ import 'chartjs-adapter-moment';
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnInit, OnChanges {
-  @Input() canvasId: string;
+  canvasId = 'canvas' + Math.random();
   @Input() threadMsg: any[] = [];
   @Input() trigger = false;
   canvas: any;
   ctx: any;
   chart: Chart;
-  uId = Math.random();
+  // uId = Math.random();
   // @ViewChild('canvas')  pathwayChart!: { nativeElement: any };
   // pathwayChart
   constructor() {
-    console.log(this.uId)
+    // console.log(this.uId)
+    // this.canvasId = 'canvas' + this.uId
   }
 
 ngOnChanges(changes: SimpleChanges) {
