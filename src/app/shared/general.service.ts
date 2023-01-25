@@ -43,7 +43,7 @@ export class Thread {
   providedIn: 'root'
 })
 export class GeneralService {
-  numberOfDevicesOnScreen: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+  numberOfDevicesOnScreen: BehaviorSubject<number> = new BehaviorSubject<number>(16);
   threads$: Array<Thread> = new Array<any>();
   devices$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([])
   constructor() { }
