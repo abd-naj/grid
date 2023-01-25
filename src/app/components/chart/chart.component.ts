@@ -1,6 +1,7 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, HostListener, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Chart} from 'chart.js';
 import 'chartjs-adapter-moment';
+import {GeneralService} from "../../shared/general.service";
 
 @Component({
   selector: 'app-chart',
@@ -9,17 +10,22 @@ import 'chartjs-adapter-moment';
 })
 export class ChartComponent implements OnInit, OnChanges {
   canvasId = 'canvas' + Math.random();
+  wrapperId = 'wrapper' + Math.random();
   @Input() threadMsg: any[] = [];
   @Input() trigger = false;
   canvas: any;
   ctx: any;
   chart: Chart;
-  // uId = Math.random();
-  // @ViewChild('canvas')  pathwayChart!: { nativeElement: any };
-  // pathwayChart
-  constructor() {
-    // console.log(this.uId)
-    // this.canvasId = 'canvas' + this.uId
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    // this.createChart();
+    this.resizeChart();
+  }
+
+  constructor(private generalService: GeneralService) {
+    this.generalService.numberOfDevicesOnScreen.subscribe(() => {
+      this.resizeChart();
+    })
   }
 
 ngOnChanges(changes: SimpleChanges) {
@@ -27,6 +33,36 @@ ngOnChanges(changes: SimpleChanges) {
 }
 
   ngOnInit(): void {
+   this.createChart();
+    // window.addEventListener('afterprint', () => {
+    //   this.chart.resize();
+    // });
+  }
+
+  randomScalingFactor() {
+    // return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
+  }
+
+/*  onRefresh(chart) {
+    chart.config.data.datasets.forEach(function(dataset) {
+      dataset.data.push({
+        x: Date.now(),
+        y: randomScalingFactor()
+      });
+    });
+  }*/
+
+
+  private getMsgs() {
+    // console.log(this.threadMsg)
+
+    return this.threadMsg ? this.threadMsg[this.threadMsg.length - 1].temperature : 0
+  }
+
+  private createChart() {
+    if (this.chart) {
+      this.chart.destroy();
+    }
     setTimeout(() => {
       const chartColors = {
         red: 'rgb(255, 99, 132)',
@@ -37,7 +73,6 @@ ngOnChanges(changes: SimpleChanges) {
         purple: 'rgb(153, 102, 255)',
         grey: 'rgb(201, 203, 207)'
       };
-      // const color = Chart.helpers.color;
       const config: any = {
         type: 'line',
         data: {
@@ -94,39 +129,31 @@ ngOnChanges(changes: SimpleChanges) {
             legend: {
               display: false
             }
-          }
+          },
+          // responsive: true,
+          maintainAspectRatio: false,
         }
       };
-      // this.canvas = this.pathwayChart.nativeElement;
-      this.canvas = document.getElementById(this.canvasId)
-      console.log(this.canvas)
+      this.canvas = document.getElementById(this.canvasId);
+      this.canvas.style.width ='100%';
+      this.canvas.style.height='100%';
       setTimeout(() => {
         this.ctx = this.canvas.getContext('2d');
 
         this.chart = new Chart(this.ctx, config);
-      }, 1000)
+      }, 500)
 
-    }, 1000)
-
+    }, 500)
   }
 
-  randomScalingFactor() {
-    return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
-  }
-
-/*  onRefresh(chart) {
-    chart.config.data.datasets.forEach(function(dataset) {
-      dataset.data.push({
-        x: Date.now(),
-        y: randomScalingFactor()
-      });
-    });
-  }*/
-
-
-  private getMsgs() {
-    // console.log(this.threadMsg)
-
-    return this.threadMsg ? this.threadMsg[this.threadMsg.length - 1].temperature : 0
+  private resizeChart() {
+    setTimeout(() => {
+      const chartWrapper = document.getElementById(this.wrapperId);
+      if (chartWrapper) {
+        const elHeight = chartWrapper.clientHeight;
+        const elWidth = chartWrapper.clientWidth;
+        this.chart?.resize(elWidth, elHeight);
+      }
+    }, 200)
   }
 }
