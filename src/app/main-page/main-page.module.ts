@@ -8,8 +8,9 @@ import {MainPanelComponent} from "../components/main-panel/main-panel.component"
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatNativeDateModule} from "@angular/material/core";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {PipesModule} from "../shared/pips/pipes.module";
+// import {PipesModule} from "../shared/pips/pipes.module";
 import {ComponentsModule} from "../components/components.module";
+import {PipesModule} from "../shared/pips/pipes.module";
 
 const routes: Routes = [
   {path: '',
@@ -26,15 +27,15 @@ const routes: Routes = [
     NavBarComponent,
     MainPageComponent
   ],
-    imports: [
-        CommonModule,
-        MaterialModule,
-        RouterModule.forChild(routes),
-        MatNativeDateModule,
-        ReactiveFormsModule,
-        FormsModule,
-        PipesModule,
-        ComponentsModule
-    ]
+  imports: [
+    CommonModule,
+    MaterialModule,
+    RouterModule.forChild(routes),
+    MatNativeDateModule,
+    ReactiveFormsModule,
+    FormsModule,
+    PipesModule,
+    ComponentsModule
+  ]
 })
 export class MainPageModule { }

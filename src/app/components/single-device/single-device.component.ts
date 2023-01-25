@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {GeneralService} from "../../shared/general.service";
 
 @Component({
   selector: 'app-single-device',
   templateUrl: './single-device.component.html',
   styleUrls: ['./single-device.component.scss']
 })
-export class SingleDeviceComponent implements OnInit {
+export class SingleDeviceComponent implements OnInit, OnChanges {
   tiles: any[] = [
     {text: '111', cols: 3, rows: 5, color: '#000000'},
     {text: '444', cols: 1, rows: 3, color: '#000000'},
@@ -21,9 +22,23 @@ export class SingleDeviceComponent implements OnInit {
     // {text: '777', cols: 1, rows: 3, color: '#d75676'},
     // {text: '888', cols: 1, rows: 3, color: '#c2f1bd'},
   ];
-  constructor() { }
+  @Input() threadMsg: any[] = [];
+  msgs: any[] = [];
+  trigger = true;
+  constructor(private generalService: GeneralService) { }
 
   ngOnInit(): void {
+
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    // console.log(this.generalService.threads$);
+    // console.log(this.threadMsg);
+    this.generalService.threads$[0]?.threads?.subscribe(value => {
+      // console.log(value);
+      // this.threadMsg[0]= value
+      this.msgs = value;
+      this.trigger = !this.trigger;
+    });
   }
 
 }

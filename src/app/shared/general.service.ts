@@ -52,13 +52,15 @@ export class GeneralService {
     if (deviceIndex >= 0) {
       const threadIndex = this.threads$.findIndex(x => x.devicesId === theadJson.deviceId);
       const threadMsg = this.threads$[threadIndex].threads.getValue() || [];
-      console.log(threadMsg);
+      // console.log(threadMsg);
+      // console.log(threadIndex);
       threadMsg.push(theadJson);
       this.threads$[threadIndex].threads.next(threadMsg);
+      // console.log(this.threads$[threadIndex]);
     } else {
       devicesIds.push(theadJson.deviceId);
-      this.devices$.next(devicesIds);
       this.threads$.push({threads: new BehaviorSubject<any>([theadJson]), devicesId: theadJson.deviceId});
+      this.devices$.next(devicesIds);
     }
   }
 }

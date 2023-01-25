@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {
   Chart,
   LineElement,
@@ -16,8 +16,10 @@ Chart.register(StreamingPlugin);
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss']
 })
-export class ChartComponent implements OnInit {
+export class ChartComponent implements OnInit, OnChanges {
   @Input() canvasId: string;
+  @Input() threadMsg: any[] = [];
+  @Input() trigger = false;
   canvas: any;
   ctx: any;
   chart: Chart;
@@ -28,6 +30,9 @@ export class ChartComponent implements OnInit {
     console.log(this.uId)
   }
 
+ngOnChanges(changes: SimpleChanges) {
+    // this.threadMsg
+}
 
   ngOnInit(): void {
     window.onload = () => {
@@ -64,13 +69,14 @@ export class ChartComponent implements OnInit {
               type: 'realtime',
               realtime: {
                 duration: 20000,
-                delay: 2000,
+                delay: 1000,
                 onRefresh: () => {
                   this.chart.config.data.datasets.forEach((dataset: any) => {
                     dataset.data.push({
                       x: Date.now(),
-                      y: this.randomScalingFactor()
+                      y: this.getMsgs()
                     });
+                    // console.log(dataset);
                   });
                 }
               },
@@ -121,8 +127,9 @@ export class ChartComponent implements OnInit {
   }*/
 
 
+  private getMsgs() {
+    // console.log(this.threadMsg)
 
-
-
-
+    return this.threadMsg ? this.threadMsg[this.threadMsg.length - 1].temperature : 0
+  }
 }

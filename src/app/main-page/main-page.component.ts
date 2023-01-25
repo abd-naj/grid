@@ -7,6 +7,7 @@ import {Tile} from "../components/main-panel/main-panel.component";
 import {ConnectMqttServerService} from "./connect-mqtt-server.service";
 
 
+
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
@@ -44,6 +45,7 @@ export class MainPageComponent implements OnInit {
   public type:string = 'all';
   public searchText: string;
   deviceData: any[];
+  msgs: Array<any[]> = [];
 
   constructor(
     // public appSettings:AppSettings,
@@ -54,17 +56,19 @@ export class MainPageComponent implements OnInit {
     private mailboxService:ConnectStreamService) {
     // this.settings = this.appSettings.settings;
     this.generalService.devices$.subscribe((value: any[]) => {
-      console.log(value);
+      // console.log(value);
       this.deviceData = value;
-      console.log(this.deviceData);
+      // console.log(this.deviceData);
       value.forEach((item, index) => {
         this.generalService.threads$[index]?.threads?.subscribe(value => {
-          console.log(value);
+          // console.log(value);
+          if (!this.msgs[index]) {this.msgs[index] = []}
+          this.msgs[index] = value
         });
       })
     });
     this.connectMqttServerService.createConnection().then((value) => {
-      console.log(value);
+      // console.log(value);
       this.connectMqttServerService.doSubscribe().subscribe(value1 => {
         // console.log(value1);
       });
@@ -103,7 +107,7 @@ export class MainPageComponent implements OnInit {
 
   ngOnInit() {
     this.tilesItemsCtrl.valueChanges.subscribe((value: any) => {
-      console.log(value)
+      // console.log(value)
       this.tilesItems = value;
       // if (value.length <= this.numberOfDevicesOnScreen) {
       //   this.tilesItems = value;

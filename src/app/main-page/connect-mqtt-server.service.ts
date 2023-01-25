@@ -76,7 +76,7 @@ export class ConnectMqttServerService {
       const { topic, qos } = this.subscription
       this.curSubscription = this.client?.observe(topic, { qos } as IClientSubscribeOptions).subscribe((message: IMqttMessage) => {
         this.subscribeSuccess = true
-        console.log(message.payload.toString())
+        // console.log(message.payload.toString())
         this.generalService.pushThread(message.payload.toString())
         observer.next(message.payload.toString())
       })

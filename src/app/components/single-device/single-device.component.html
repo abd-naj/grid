@@ -19,7 +19,7 @@
     </mat-grid-tile>
     <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[3].color">
       <div style="color: red" class="measurement">
-        <app-chart [canvasId]="'canvas1'"></app-chart>
+        <app-chart [canvasId]="'canvas1'" [threadMsg]="threadMsg" [trigger]="trigger"></app-chart>
       </div>
     </mat-grid-tile>
     <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[4].color">
