@@ -27,9 +27,27 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
   msgs: any[] = [];
   trigger = true;
   numberOfDevicesOnScreen = 0;
+  rowHeight: string;
   constructor(private generalService: GeneralService) {
     this.generalService.numberOfDevicesOnScreen.subscribe((value) => {
       this.numberOfDevicesOnScreen = value;
+      switch (value) {
+        case 1: {
+          this.rowHeight = '6.57%';
+          break
+        }
+        case 4: {
+          this.rowHeight = '6.48%';
+          break
+        }
+        case 8: {
+          this.rowHeight = '6.48%';
+          break
+        }
+        case 16:  {
+          this.rowHeight = '6.3%'
+        }
+      }
     })
   }
 

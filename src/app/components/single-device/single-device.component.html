@@ -1,5 +1,5 @@
 <div class="parent">
-  <mat-grid-list cols="4" rowHeight="6.5%">
+  <mat-grid-list cols="4" [rowHeight]="rowHeight">
     <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[0].color">
       <div style="color: green" class="measurement">
         <app-chart  [threadMsg]="threadMsg" [trigger]="trigger"></app-chart>
