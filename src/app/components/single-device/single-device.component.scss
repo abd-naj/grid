@@ -34,6 +34,34 @@
     justify-content: center;
     padding: 8px;
   }
+
+  .unit-1{
+    font-size: larger;
+  }
+  .value-1{
+    font-size: xxx-large;
+  }
+  .unit-4{
+    font-size: larger;
+  }
+  .value-4{
+    font-size: xx-large;
+  }
+  .unit-8{
+    font-size: larger;
+  }
+  .value-8{
+    font-size: x-large;
+  }
+  .unit-16{
+    font-size: larger;
+    padding: 2px;
+  }
+  .value-16{
+    font-size: large;
+    padding: 0;
+  }
+
 }
 app-chart{
   width: 100%;

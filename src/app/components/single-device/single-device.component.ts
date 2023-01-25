@@ -23,9 +23,15 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
     // {text: '888', cols: 1, rows: 3, color: '#c2f1bd'},
   ];
   @Input() threadMsg: any[] = [];
+  @Input() threadIndex: number;
   msgs: any[] = [];
   trigger = true;
-  constructor(private generalService: GeneralService) { }
+  numberOfDevicesOnScreen = 0;
+  constructor(private generalService: GeneralService) {
+    this.generalService.numberOfDevicesOnScreen.subscribe((value) => {
+      this.numberOfDevicesOnScreen = value;
+    })
+  }
 
   ngOnInit(): void {
 
@@ -33,12 +39,14 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     // console.log(this.generalService.threads$);
     // console.log(this.threadMsg);
-    this.generalService.threads$[0]?.threads?.subscribe(value => {
-      // console.log(value);
-      // this.threadMsg[0]= value
-      this.msgs = value;
-      this.trigger = !this.trigger;
-    });
+    if (this.threadIndex) {
+      this.generalService.threads$[this.threadIndex]?.threads?.subscribe(value => {
+        // console.log(value);
+        // this.threadMsg[0]= value
+        this.msgs = value;
+        this.trigger = !this.trigger;
+      });
+    }
   }
 
 }

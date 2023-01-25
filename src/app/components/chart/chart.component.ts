@@ -39,9 +39,9 @@ ngOnChanges(changes: SimpleChanges) {
     // });
   }
 
-  randomScalingFactor() {
-    // return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
-  }
+  // randomScalingFactor() {
+  //   return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
+  // }
 
 /*  onRefresh(chart) {
     chart.config.data.datasets.forEach(function(dataset) {
