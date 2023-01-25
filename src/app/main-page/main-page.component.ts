@@ -1,7 +1,7 @@
 import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl} from "@angular/forms";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {DeviceData, GeneralService, IDeviceData} from "../shared/general.service";
+import {DeviceData, GeneralService, Thread} from "../shared/general.service";
 import {ConnectStreamService} from "./connect-stream.service";
 import {Tile} from "../components/main-panel/main-panel.component";
 import {ConnectMqttServerService} from "./connect-mqtt-server.service";
@@ -14,7 +14,7 @@ import {ConnectMqttServerService} from "./connect-mqtt-server.service";
   styleUrls: ['./main-page.component.scss']
 })
 export class MainPageComponent implements OnInit {
-  tilesItemsCtrl: FormControl<Tile[] | null> = new FormControl<Tile[]>([]);
+  tilesItemsCtrl: FormControl<Thread[] | null> = new FormControl<Thread[]>([]);
   tilesItems: Tile[] = [];
   tiles: Tile[] = [
     {text: 'One', cols: 1, rows: 1, color: 'lightblue'},
@@ -36,7 +36,7 @@ export class MainPageComponent implements OnInit {
   ];
   colsNumber: number;
   rowHeight: string;
-  private numberOfDevicesOnScreen: number;
+  numberOfDevicesOnScreen: number;
   @ViewChild('sidenav', { static: true }) sidenav: any;
   // public settings: Settings;
   public sidenavOpen:boolean = false;
@@ -52,11 +52,17 @@ export class MainPageComponent implements OnInit {
     public formBuilder: FormBuilder,
     public snackBar: MatSnackBar,
     public generalService: GeneralService,
-    private connectMqttServerService: ConnectMqttServerService,
-    private mailboxService:ConnectStreamService) {
+    private connectMqttServerService: ConnectMqttServerService
+  ) {
     // this.settings = this.appSettings.settings;
     this.generalService.devices$.subscribe((value: any[]) => {
-      // console.log(value);
+      console.log(value);
+      console.log(this.tilesItemsCtrl.value?.length);
+      console.log(this.generalService.numberOfDevicesOnScreen.getValue());
+      if (value.length <= this.generalService.numberOfDevicesOnScreen.getValue() &&
+        (this.tilesItemsCtrl.value?.length || 0) < this.generalService.numberOfDevicesOnScreen.getValue()) {
+        this.tilesItemsCtrl.setValue(this.generalService.threads$)
+      }
       this.deviceData = value;
       // console.log(this.deviceData);
       value.forEach((item, index) => {
@@ -67,9 +73,9 @@ export class MainPageComponent implements OnInit {
         });
       })
     });
-    this.connectMqttServerService.createConnection().then((value) => {
+    this.connectMqttServerService.createConnection().then(() => {
       // console.log(value);
-      this.connectMqttServerService.doSubscribe().subscribe(value1 => {
+      this.connectMqttServerService.doSubscribe().subscribe(() => {
         // console.log(value1);
       });
     });
@@ -107,8 +113,8 @@ export class MainPageComponent implements OnInit {
 
   ngOnInit() {
     this.tilesItemsCtrl.valueChanges.subscribe((value: any) => {
-      // console.log(value)
-      this.tilesItems = value;
+      console.log(value)
+      // this.tilesItems = value;
       // if (value.length <= this.numberOfDevicesOnScreen) {
       //   this.tilesItems = value;
       // }
@@ -123,73 +129,11 @@ export class MainPageComponent implements OnInit {
     // (window.innerWidth <= 992) ? this.sidenavOpen = false : this.sidenavOpen = true;
   }
 
-  public getMails(){
-    this.deviceData = this.mailboxService.getAllMails();
-  /*  switch (this.type) {
-      case 'all':
-        this.mails = this.mailboxService.getAllMails();
-        break;
-      case 'starred':
-        this.mails =  this.mailboxService.getStarredMails();
-        break;
-      case 'sent':
-        this.mails =  this.mailboxService.getSentMails();
-        break;
-      case 'drafts':
-        this.mails =  this.mailboxService.getDraftMails();
-        break;
-      case 'trash':
-        this.mails =  this.mailboxService.getTrashMails();
-        break;
-      default:
-        this.mails =  this.mailboxService.getDraftMails();
-    }*/
+  public viewDetail(thread: Thread, index: number ){
+    thread.index = index;
   }
 
-  public viewDetail(mail: IDeviceData){
-    // this.mail = this.mailboxService.getMail(mail.id);
-    // this.mails.forEach(m => m.selected = false);
-    // this.mail.selected = true;
-    // this.mail.unread = false;
-    // this.newMail = false;
-    if(window.innerWidth <= 992){
-      this.sidenav.close();
-    }
-  }
 
-  public compose(){
-    // this.mail = null;
-    this.newMail = true;
-  }
-
-  public setAsRead(){
-    // this.mail.unread = false;
-  }
-
-  public setAsUnRead(){
-    // this.mail.unread = true;
-  }
-
-  public delete() {
-    // this.mail.trash = true;
-    // this.mail.sent = false;
-    // this.mail.draft = false;
-    // this.mail.starred = false;
-    this.getMails();
-    // this.mail = null;
-  }
-
-  public changeStarStatus() {
-    // this.mail.starred = !this.mail.starred;
-    this.getMails();
-  }
-
-  public restore(){
-    // this.mail.trash = false;
-    this.type = 'all';
-    this.getMails();
-    // this.mail = null;
-  }
 
   setNumberOfDevicesOnScreen(count: number) {
     this.generalService.setNumberOfDevicesOnScreen(count);

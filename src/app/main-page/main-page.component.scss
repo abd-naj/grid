@@ -14,6 +14,12 @@
     padding: 16px;
   }
   .empty{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     mat-icon{
       font-size: 220px;
       height: 220px;
@@ -21,8 +27,9 @@
       opacity: 0.4;
     }
     p{
-      font-size: 18px;
-      opacity: 0.8;
+      font-size: xx-large;
+      opacity: 0.6;
+      font-weight: bold;
     }
   }
 }

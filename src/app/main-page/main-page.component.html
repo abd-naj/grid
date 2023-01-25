@@ -6,7 +6,7 @@
       <mat-sidenav-container>
         <mat-sidenav #sidenav [opened]="sidenavOpen" [mode]="sidenavOpen ? 'side' : 'over'" class="mailbox-sidenav mat-elevation-z1">
           <mat-toolbar color="primary" class="p-0 toolbar" >
-            <input [(ngModel)]="searchText" type="text" placeholder="Search By User ID..." class="search mat-elevation-z3">
+            <input [(ngModel)]="searchText" type="text" placeholder="Search By Device ID..." class="search mat-elevation-z3">
             <!--<button mat-icon-button [matMenuTriggerFor]="filterMenu" #filterMenuTrigger="matMenuTrigger">
               <mat-icon>more_vert</mat-icon>
             </button>-->
@@ -23,10 +23,10 @@
           <mat-nav-list class="p-0 mailbox-sidenav-list">
               <mat-selection-list [formControl]="tilesItemsCtrl">
                 <mat-list-option
-                  *ngFor="let mail of generalService.devices$ | async"
-                  (click)="viewDetail(mail)" [value]="mail">
+                  *ngFor="let item of generalService.threads$, index as i"
+                  (click)="viewDetail(item, i)" [value]="item">
                   <div matLine>
-                    <small>{{mail}}</small>
+                    <small>{{item.devicesId}}</small>
                   </div>
                 </mat-list-option>
               </mat-selection-list>
@@ -60,10 +60,10 @@
                         </span>
           </mat-menu>-->
           <div class="mailbox-content" >
-            <div class="container">
+            <div class="container" *ngIf="tilesItemsCtrl.value?.length">
               <mat-grid-list [cols]="colsNumber" [rowHeight]="rowHeight" >
                 <mat-grid-tile
-                  *ngFor="let tile of tilesItems; index as i"
+                  *ngFor="let tile of tilesItemsCtrl.value| sliceArray: numberOfDevicesOnScreen; index as i"
                   [colspan]="1"
                   [rowspan]="1">
                   <div class="deviceItem-container">
@@ -78,9 +78,9 @@
                 </mat-grid-tile>
               </mat-grid-list>
             </div>
-            <div *ngIf="tilesItems.length === 0" class="h-100 empty">
-              <mat-icon>mail_outline</mat-icon>
-              <p>Select a mail to read</p>
+            <div *ngIf="!tilesItemsCtrl.value?.length" class="empty">
+              <mat-icon>hourglass_empty</mat-icon>
+              <p>No Streaming</p>
             </div>
 
           </div>

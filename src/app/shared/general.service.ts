@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Subject} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 
 export interface IDeviceData{
   status: number,
@@ -33,13 +33,18 @@ export class DeviceData {
     this.userId = userId1;
   }
 }
+export class Thread {
+  threads: BehaviorSubject<any>;
+  devicesId: string;
+  index: number
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class GeneralService {
   numberOfDevicesOnScreen: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-  threads$: Array<{ threads: BehaviorSubject<any>, devicesId: string }> = new Array<any>();
+  threads$: Array<Thread> = new Array<any>();
   devices$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([])
   constructor() { }
   setNumberOfDevicesOnScreen(count: number): void {
@@ -59,7 +64,7 @@ export class GeneralService {
       // console.log(this.threads$[threadIndex]);
     } else {
       devicesIds.push(theadJson.deviceId);
-      this.threads$.push({threads: new BehaviorSubject<any>([theadJson]), devicesId: theadJson.deviceId});
+      this.threads$.push({threads: new BehaviorSubject<any>([theadJson]), devicesId: theadJson.deviceId, index: 0});
       this.devices$.next(devicesIds);
     }
   }
