@@ -43,7 +43,7 @@ ngOnChanges(changes: SimpleChanges) {
         data: {
           datasets: [
             {
-              label: 'Dataset 2 (cubic interpolation)',
+              label: '',
               backgroundColor: chartColors.blue,
               borderColor: chartColors.blue,
               fill: false,
@@ -76,8 +76,8 @@ ngOnChanges(changes: SimpleChanges) {
             },
             y: {
               title: {
-                display: true,
-                text: 'Value'
+                display: false,
+                text: ''
               }
             }
           },
@@ -89,6 +89,11 @@ ngOnChanges(changes: SimpleChanges) {
           hover: {
             mode: 'nearest',
             intersect: false
+          },
+          plugins: {
+            legend: {
+              display: false
+            }
           }
         }
       };
