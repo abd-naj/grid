@@ -39,7 +39,7 @@ export class MainPanelComponent implements OnInit {
   constructor(private generalService: GeneralService) {
     this.generalService.numberOfDevicesOnScreen.subscribe((value: number) => {
       this.numberOfDevicesOnScreen = value;
-      console.log(value)
+      // console.log(value)
       switch (value) {
         case 16: {
           this.colsNumber = 4;

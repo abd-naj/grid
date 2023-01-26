@@ -9,8 +9,8 @@ export class DeviceFilterPipe implements PipeTransform {
     let searchText = new RegExp(args, 'ig');
     if (value) {
       return value.filter((mail: any) => {
-        if(mail.devicesId){
-          if(mail.devicesId.search(searchText) !== -1){
+        if(mail.patientId){
+          if(mail.patientId.search(searchText) !== -1){
             return true;
           }
         }

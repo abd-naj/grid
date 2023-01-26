@@ -5,6 +5,7 @@ import {DeviceData, GeneralService, Thread} from "../shared/general.service";
 import {ConnectStreamService} from "./connect-stream.service";
 import {Tile} from "../components/main-panel/main-panel.component";
 import {ConnectMqttServerService} from "./connect-mqtt-server.service";
+import {MatListOption} from "@angular/material/list";
 
 
 
@@ -14,7 +15,8 @@ import {ConnectMqttServerService} from "./connect-mqtt-server.service";
   styleUrls: ['./main-page.component.scss']
 })
 export class MainPageComponent implements OnInit {
-  tilesItemsCtrl: FormControl<Thread[] | null> = new FormControl<Thread[]>([]);
+  // tilesItemsCtrl: FormControl<Thread[] | null> = new FormControl<Thread[]>([]);
+  tilesItemsCtrl: FormControl<any[] | null> = new FormControl<any[]>([]);
   tilesItems: Tile[] = [];
   tiles: Tile[] = [
     {text: 'One', cols: 1, rows: 1, color: 'lightblue'},
@@ -46,6 +48,9 @@ export class MainPageComponent implements OnInit {
   public searchText: string;
   deviceData: any[];
   msgs: Array<any[]> = [];
+  devices: any[];
+  trigChange = true;
+  selectedPatient: any[] = [];
 
   constructor(
     // public appSettings:AppSettings,
@@ -56,23 +61,28 @@ export class MainPageComponent implements OnInit {
   ) {
     // this.settings = this.appSettings.settings;
     this.generalService.devices$.subscribe((value: any[]) => {
-      console.log(value);
+      // console.log(value);
+      this.devices = value;
       // console.log(this.tilesItemsCtrl.value?.length);
       // console.log(this.generalService.numberOfDevicesOnScreen.getValue());
-
+      const selectedItems = this.tilesItemsCtrl.value;
       if (value.length <= 16 && (this.tilesItemsCtrl.value?.length || 0) < 16) {
       // if (value.length <= 16) {
-        this.tilesItemsCtrl.setValue(this.generalService.threads$)
+        const threads: any = [];
+        Object.assign(threads, value);
+        this.tilesItemsCtrl.setValue(threads)
       }
       this.deviceData = value;
       // console.log(this.deviceData);
       value.forEach((item, index) => {
         this.generalService.threads$[index]?.threads?.subscribe(value => {
           // console.log(value);
+          this.trigChange = !this.trigChange
           if (!this.msgs[index]) {this.msgs[index] = []}
           this.msgs[index] = value
         });
       })
+
     });
     this.connectMqttServerService.createConnection().then(() => {
       // console.log(value);
@@ -114,7 +124,8 @@ export class MainPageComponent implements OnInit {
 
   ngOnInit() {
     this.tilesItemsCtrl.valueChanges.subscribe((value: any) => {
-      console.log(value)
+      this.changeSelectedPatient();
+      // console.log(value)
       // this.tilesItems = value;
       // if (value.length <= this.numberOfDevicesOnScreen) {
       //   this.tilesItems = value;
@@ -143,4 +154,19 @@ export class MainPageComponent implements OnInit {
   arrayOFNumber(numberOfDevicesOnScreen: number): Array<number>{
     return Array(numberOfDevicesOnScreen).fill(0).map((x,i)=>i);
   }
+
+  changeSelectedPatient() {
+    // this.selectedPatient = this.generalService.threads$.filter(x => x.patientId === )
+    /*this.selectedPatient = this.generalService.threads$.filter(function (o1) {
+      return !options.some(function (o2) {
+        return o1.patientId === o2.patientId; // return the ones with equal id
+      });
+    });*/
+// if you want to be more clever...
+    const options = this.tilesItemsCtrl.value || [];
+    // console.log(options);
+    this.selectedPatient = this.generalService.threads$.filter(o1 => options.some((o2: any) => o1.patientId === o2.patientId));
+    // console.log(this.selectedPatient);
+  }
+
 }

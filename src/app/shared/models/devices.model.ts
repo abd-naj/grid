@@ -1,4 +1,4 @@
-interface Device {
+export interface Device {
   deviceId: string;
   status: number;
   timestamp: string;

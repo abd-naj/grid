@@ -11,11 +11,17 @@ import {GeneralService} from "../../shared/general.service";
 export class ChartComponent implements OnInit, OnChanges {
   canvasId = 'canvas' + Math.random();
   wrapperId = 'wrapper' + Math.random();
-  @Input() threadMsg: any[] = [];
+  @Input() threadMsg: any;
   @Input() trigger = false;
+  @Input() type: string;
   canvas: any;
   ctx: any;
   chart: Chart;
+  heratRate: number;
+  nibp: string;
+  spo2: number;
+  temp: number;
+  xxx: number;
   @HostListener('window:resize', ['$event'])
   onResize() {
     // this.createChart();
@@ -54,9 +60,35 @@ ngOnChanges(changes: SimpleChanges) {
 
 
   private getMsgs() {
+    // console.log(this.trigger)
     // console.log(this.threadMsg)
-
-    return this.threadMsg ? this.threadMsg[this.threadMsg.length - 1].temperature : 0
+    if (this.threadMsg) {
+      const ecgData = this.threadMsg.threads1.filter((x: any)=> x.type === 'ECG');
+      const pulseData = this.threadMsg.threads1.filter((x: any) => x.type === 'pulse');
+      const pressureData = this.threadMsg.threads1.filter((x: any)=> x.type === 'pressure');
+      const thermometerData = this.threadMsg.threads1.filter((x: any)=> x.type === 'thermometer');
+      this.heratRate = pulseData[pulseData.length - 1]?.pulseRate;
+      this.nibp = pressureData[pulseData.length - 1]?.highPressure + '/' + pressureData[pulseData.length - 1]?.lowPressure;
+      this.spo2 = pulseData[pulseData.length - 1]?.spO2;
+      this.temp = thermometerData[pulseData.length - 1]?.temperature;
+      this.xxx = pressureData[pulseData.length - 1]?.meanPressure;
+      // console.log(this.heratRate)
+      switch (this.type) {
+        case 'ECG': {
+          return ecgData.length > 0 ? ecgData[ecgData.length - 1]?.heartRate : 0;
+          // break;
+        }
+        case 'SPO2': {
+          return pulseData.length > 0  ? pulseData[pulseData.length - 1]?.spO2 : 0;
+          // break;
+        }
+        case 'RECP': {
+          return pressureData.length > 0  ? pressureData[pressureData.length - 1]?.meanPressure : 0;
+          // break;
+        }
+      }
+    }
+    // return this.threadMsg ? this.threadMsg[this.threadMsg.length - 1].temperature : 0
   }
 
   private createChart() {

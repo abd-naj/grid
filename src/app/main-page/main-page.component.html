@@ -21,9 +21,9 @@
                         </span>
           </mat-menu>-->
           <mat-nav-list class="p-0 mailbox-sidenav-list">
-              <mat-selection-list [formControl]="tilesItemsCtrl">
+              <mat-selection-list [formControl]="tilesItemsCtrl" (selectionChange)="changeSelectedPatient()">
                 <mat-list-option
-                  *ngFor="let item of generalService.threads$, index as i"
+                  *ngFor="let item of devices, index as i"
                   (click)="viewDetail(item, i)" [value]="item">
                   <div matLine>
                     <small>{{item.patientId}}</small>
@@ -60,7 +60,7 @@
                             <button mat-menu-item (click)="delete()">Delete</button>
                         </span>
           </mat-menu>-->
-          <div class="mailbox-content" >
+          <div class="mailbox-content">
             <div class="container">
               <mat-grid-list [cols]="colsNumber" [rowHeight]="rowHeight" >
 
@@ -73,7 +73,8 @@
                   <div class="deviceItem-container">
                     <div class="device-data">
 <!--                      <div>{{deviceData[i].userId}}</div>-->
-                      <app-single-device [threadMsg]="msgs[i]" [threadIndex]="i" ></app-single-device>
+                      <app-single-device [threadMsg]="selectedPatient[i]" [trigChange]="trigChange"
+                                         [threadIndex]="i" ></app-single-device>
                     </div>
 <!--                    <div class="overlay">-->
 <!--                      <div class="text"> <mat-icon  (click)="setNumberOfDevicesOnScreen(1)" class="fullscreen">fullscreen</mat-icon></div>-->

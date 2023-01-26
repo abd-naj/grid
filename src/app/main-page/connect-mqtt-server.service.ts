@@ -41,6 +41,7 @@ export class ConnectMqttServerService {
   isConnection = false;
   subscribeSuccess = false;
   private curSubscription: Subscription | undefined;
+  private mm: any[] = [];
   constructor(private _mqttService: MqttService,
               private generalService: GeneralService) {
     this.client = this._mqttService;
@@ -77,6 +78,8 @@ export class ConnectMqttServerService {
       this.curSubscription = this.client?.observe(topic, { qos } as IClientSubscribeOptions).subscribe((message: IMqttMessage) => {
         this.subscribeSuccess = true
         // console.log(message.payload.toString())
+        // this.mm.push(message.payload.toString())
+        console.log(1)
         this.generalService.pushThread(message.payload.toString())
         observer.next(message.payload.toString())
       })
