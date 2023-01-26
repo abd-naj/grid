@@ -1,4 +1,5 @@
 <div class="parent">
+  <div class="header">Patient Id: &nbsp;{{patientId}}&nbsp; - &nbsp;Device Id: &nbsp;{{deviceId}}</div>
   <mat-grid-list cols="4" [rowHeight]="rowHeight">
     <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[0].color">
       <div style="color: green" class="measurement">
@@ -45,6 +46,6 @@
         <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{tiles[7].text}}</div>
       </div>
     </mat-grid-tile>
-
   </mat-grid-list>
+  <div class="offline-icon" *ngIf="isOffline" >NO SIGNAL</div>
 </div>
