@@ -36,6 +36,7 @@ export class DeviceData {
 export class Thread {
   threads: BehaviorSubject<any>;
   devicesId: string;
+  patientId: string;
   index: number
 }
 
@@ -64,7 +65,7 @@ export class GeneralService {
       // console.log(this.threads$[threadIndex]);
     } else {
       devicesIds.push(theadJson.deviceId);
-      this.threads$.push({threads: new BehaviorSubject<any>([theadJson]), devicesId: theadJson.deviceId, index: 0});
+      this.threads$.push({threads: new BehaviorSubject<any>([theadJson]), devicesId: theadJson.deviceId, index: 0, patientId: theadJson.userId});
       this.devices$.next(devicesIds);
     }
   }
