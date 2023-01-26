@@ -57,10 +57,11 @@ export class MainPageComponent implements OnInit {
     // this.settings = this.appSettings.settings;
     this.generalService.devices$.subscribe((value: any[]) => {
       console.log(value);
-      console.log(this.tilesItemsCtrl.value?.length);
-      console.log(this.generalService.numberOfDevicesOnScreen.getValue());
-      if (value.length <= this.generalService.numberOfDevicesOnScreen.getValue() &&
-        (this.tilesItemsCtrl.value?.length || 0) < this.generalService.numberOfDevicesOnScreen.getValue()) {
+      // console.log(this.tilesItemsCtrl.value?.length);
+      // console.log(this.generalService.numberOfDevicesOnScreen.getValue());
+
+      if (value.length <= 16 && (this.tilesItemsCtrl.value?.length || 0) < 16) {
+      // if (value.length <= 16) {
         this.tilesItemsCtrl.setValue(this.generalService.threads$)
       }
       this.deviceData = value;
@@ -137,5 +138,9 @@ export class MainPageComponent implements OnInit {
 
   setNumberOfDevicesOnScreen(count: number) {
     this.generalService.setNumberOfDevicesOnScreen(count);
+  }
+
+  arrayOFNumber(numberOfDevicesOnScreen: number): Array<number>{
+    return Array(numberOfDevicesOnScreen).fill(0).map((x,i)=>i);
   }
 }

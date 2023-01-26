@@ -15,7 +15,7 @@ export class DeviceData {
   temperature: number;
   deviceId: string;
   timestamp: string;
-  type: 'thermometer' | 'pulse' | 'ECG';
+  type: 'thermometer' | 'pulse' | 'ECG' | 'pressure';
   userId: string
   constructor(
     status1: number,

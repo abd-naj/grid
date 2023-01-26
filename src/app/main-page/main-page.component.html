@@ -26,7 +26,7 @@
                   *ngFor="let item of generalService.threads$, index as i"
                   (click)="viewDetail(item, i)" [value]="item">
                   <div matLine>
-                    <small>{{item.devicesId}}</small>
+                    <small>{{item.patientId}}</small>
                   </div>
                 </mat-list-option>
               </mat-selection-list>
@@ -61,10 +61,13 @@
                         </span>
           </mat-menu>-->
           <div class="mailbox-content" >
-            <div class="container" *ngIf="tilesItemsCtrl.value?.length">
+            <div class="container">
               <mat-grid-list [cols]="colsNumber" [rowHeight]="rowHeight" >
+
+
+                <!--*ngFor="let tile of tilesItemsCtrl.value| sliceArray: numberOfDevicesOnScreen; index as i"-->
                 <mat-grid-tile
-                  *ngFor="let tile of tilesItemsCtrl.value| sliceArray: numberOfDevicesOnScreen; index as i"
+                *ngFor="let tile of arrayOFNumber(numberOfDevicesOnScreen); index as i"
                   [colspan]="1"
                   [rowspan]="1">
                   <div class="deviceItem-container">
@@ -79,10 +82,10 @@
                 </mat-grid-tile>
               </mat-grid-list>
             </div>
-            <div *ngIf="!tilesItemsCtrl.value?.length" class="empty">
+            <!--<div *ngIf="!tilesItemsCtrl.value?.length" class="empty">
               <mat-icon>hourglass_empty</mat-icon>
-              <p>No Streaming</p>
-            </div>
+              <p>No Data</p>
+            </div>-->
 
           </div>
         </div>

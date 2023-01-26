@@ -1,51 +1,53 @@
-<div class="parent">
+<div class="container">
   <div class="header">Patient Id: &nbsp;{{patientId}}&nbsp; - &nbsp;Device Id: &nbsp;{{deviceId}}</div>
-  <mat-grid-list cols="4" [rowHeight]="rowHeight">
-    <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[0].color">
-      <div style="color: green" class="measurement">
-        <app-chart  [threadMsg]="threadMsg" [trigger]="trigger"></app-chart>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[1].color">
-      <div style="color: green" class="measurement">
-        <div class="measurement-unit" [class]="'unit-'+ numberOfDevicesOnScreen">bpm</div>
-        <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{tiles[1].text}}</div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[2].color">
-      <div style="color: white" class="measurement">
-        <div class="measurement-unit" [class]="'unit-'+ numberOfDevicesOnScreen">mmHG</div>
-        <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{tiles[2].text}}</div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[3].color">
-      <div style="color: red" class="measurement">
-        <app-chart [threadMsg]="threadMsg" [trigger]="trigger"></app-chart>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[4].color">
-      <div style="color: red" class="measurement">
-        <div class="measurement-unit" [class]="'unit-'+ numberOfDevicesOnScreen">CO2</div>
-        <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{tiles[4].text}}</div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[5].color">
-      <div style="color: white" class="measurement">
-        <div class="measurement-unit" [class]="'unit-'+ numberOfDevicesOnScreen">bpm</div>
-        <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{tiles[5].text}}</div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[6].color">
-      <div style="color: yellow" class="measurement">
-        <app-chart [threadMsg]="threadMsg" [trigger]="trigger"></app-chart>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[7].color">
-      <div style="color: yellow" class="measurement">
-        <div class="measurement-unit" [class]="'unit-'+ numberOfDevicesOnScreen">bpm</div>
-        <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{tiles[7].text}}</div>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
+  <div class="parent">
+    <mat-grid-list cols="4" [rowHeight]="rowHeight">
+      <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[0].color">
+        <div style="color: green" class="measurement">
+          <app-chart  [threadMsg]="threadMsg" [trigger]="trigger"></app-chart>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[1].color">
+        <div style="color: green" class="measurement">
+          <div class="measurement-unit" [class]="'unit-'+ numberOfDevicesOnScreen">bpm</div>
+          <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{tiles[1].text}}</div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[2].color">
+        <div style="color: white" class="measurement">
+          <div class="measurement-unit" [class]="'unit-'+ numberOfDevicesOnScreen">mmHG</div>
+          <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{tiles[2].text}}</div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[3].color">
+        <div style="color: red" class="measurement">
+          <app-chart [threadMsg]="threadMsg" [trigger]="trigger"></app-chart>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[4].color">
+        <div style="color: red" class="measurement">
+          <div class="measurement-unit" [class]="'unit-'+ numberOfDevicesOnScreen">CO2</div>
+          <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{tiles[4].text}}</div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[5].color">
+        <div style="color: white" class="measurement">
+          <div class="measurement-unit" [class]="'unit-'+ numberOfDevicesOnScreen">bpm</div>
+          <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{tiles[5].text}}</div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[6].color">
+        <div style="color: yellow" class="measurement">
+          <app-chart [threadMsg]="threadMsg" [trigger]="trigger"></app-chart>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[7].color">
+        <div style="color: yellow" class="measurement">
+          <div class="measurement-unit" [class]="'unit-'+ numberOfDevicesOnScreen">bpm</div>
+          <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{tiles[7].text}}</div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
   <div class="offline-icon" *ngIf="isOffline" >NO SIGNAL</div>
 </div>

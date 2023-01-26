@@ -1,17 +1,16 @@
-.parent {
-  //display: grid;
-  //grid-template-columns: 25% 25% 25% 25%;
-  //grid-template-rows:  25% 25%  25% 25%;
-  //grid-gap: 1px;
-  //place-items: center;
-  border: 2px solid green;
+.container{
   height: 100%;
   position: relative;
+  border: 2px solid green;
+  .parent {
+    height: calc(100% - (26px));
+}
   .header{
     font-weight: bold;
     color: white;
-    background: blue;
+    background: #0d0db5;
   }
+
 }
 .measurement{
   display: flex;
