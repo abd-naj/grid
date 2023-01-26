@@ -6,6 +6,12 @@
   //place-items: center;
   border: 2px solid green;
   height: 100%;
+  position: relative;
+  .header{
+    font-weight: bold;
+    color: white;
+    background: blue;
+  }
 }
 .measurement{
   display: flex;
@@ -15,7 +21,7 @@
   width: 100%;
   .measurement-unit{
     display: flex;
-    font-size: larger;
+    //font-size: larger;
     font-weight: bolder;
     flex: 1 1 100%;
     box-sizing: border-box;
@@ -25,7 +31,7 @@
   }
   .measurement-value{
     display: flex;
-    font-size: xxx-large;
+    //font-size: xxx-large;
     font-weight: bolder;
     flex: 1 1 100%;
     box-sizing: border-box;
@@ -54,11 +60,11 @@
     font-size: x-large;
   }
   .unit-16{
-    font-size: larger;
+    font-size: small;
     padding: 2px;
   }
   .value-16{
-    font-size: large;
+    font-size: larger;
     padding: 0;
   }
 
@@ -66,4 +72,20 @@
 app-chart{
   width: 100%;
   height: 100%;
+}
+.offline-icon{
+  position: absolute;
+  top: 25px;
+  left: 32px;
+  color: red;
+  font-size: larger;
+  width: auto;
+  height: auto;
+  font-weight: bold;
+  padding: 1px;
+  //animation: blinker 1s linear infinite;
+  border: 1px solid red;
+}
+.blink_me {
+  animation: blinker 1s linear infinite;
 }
