@@ -28,6 +28,12 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
   trigger = true;
   numberOfDevicesOnScreen = 0;
   rowHeight: string;
+  private timer2: any;
+  timeout = 0;
+  progressBarValue: number;
+  isOffline = false;
+  deviceId: string;
+  patientId: string;
   constructor(private generalService: GeneralService) {
     this.generalService.numberOfDevicesOnScreen.subscribe((value) => {
       this.numberOfDevicesOnScreen = value;
@@ -57,14 +63,41 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     // console.log(this.generalService.threads$);
     // console.log(this.threadMsg);
-    if (this.threadIndex) {
+    // console.log(this.threadIndex)
+    if (this.threadIndex >= 0) {
+      sessionStorage.setItem('time'+ this.threadIndex, new Date().toISOString());
+      this.time_observer();
       this.generalService.threads$[this.threadIndex]?.threads?.subscribe(value => {
+        this.deviceId = this.generalService.threads$[this.threadIndex]?.devicesId;
+        this.patientId = this.generalService.threads$[this.threadIndex]?.patientId;
         // console.log(value);
         // this.threadMsg[0]= value
+        // this.updateTimer('reset')
+        this.time_observer();
+        sessionStorage.setItem('time'+ this.threadIndex, new Date().toISOString());
         this.msgs = value;
         this.trigger = !this.trigger;
       });
     }
   }
 
+
+  private time_observer() {
+    const refreshIntervalId = setInterval(() => {
+      const start_time = new Date(sessionStorage.getItem('time'+ this.threadIndex)?.toString() || '');
+      const time_now = new Date();
+      const diff = time_now.getTime() - start_time.getTime(); // This will give difference in milliseconds
+      // const sessionTime = Math.round(diff / 60000);
+      // console.log(diff/1000);
+      // console.log(diff);
+      if (diff >= 2000) {
+        // this.updateTimer();
+        // console.log('offline.....')
+        this.isOffline = true;
+        clearInterval(refreshIntervalId);
+      } else {
+        this.isOffline = false;
+      }
+    }, 2000);
+  }
 }
