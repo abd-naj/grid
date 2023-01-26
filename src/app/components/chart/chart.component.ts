@@ -107,6 +107,9 @@ ngOnChanges(changes: SimpleChanges) {
                   });
                 }
               },
+              ticks: {
+                display: false
+              },
               reverse: true
             },
             y: {
@@ -132,6 +135,11 @@ ngOnChanges(changes: SimpleChanges) {
           },
           // responsive: true,
           maintainAspectRatio: false,
+          elements: {
+            point:{
+              radius: 0
+            }
+          }
         }
       };
       this.canvas = document.getElementById(this.canvasId);
