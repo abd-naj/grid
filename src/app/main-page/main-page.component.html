@@ -7,19 +7,7 @@
         <mat-sidenav #sidenav [opened]="sidenavOpen" [mode]="sidenavOpen ? 'side' : 'over'" class="mailbox-sidenav mat-elevation-z1">
           <mat-toolbar color="primary" class="p-0 toolbar" >
             <input [(ngModel)]="searchText" type="text" placeholder="Search By Patient ID..." class="search mat-elevation-z3">
-            <!--<button mat-icon-button [matMenuTriggerFor]="filterMenu" #filterMenuTrigger="matMenuTrigger">
-              <mat-icon>more_vert</mat-icon>
-            </button>-->
           </mat-toolbar>
-         <!-- <mat-menu #filterMenu="matMenu" xPosition="before" overlapTrigger="true">
-                        <span (mouseleave)="filterMenuTrigger.closeMenu()">
-                            <button mat-menu-item (click)="type = 'all';getMails();">All</button>
-                            <button mat-menu-item (click)="type = 'starred';getMails();">Starred</button>
-                            <button mat-menu-item (click)="type = 'sent';getMails();">Sent</button>
-                            <button mat-menu-item (click)="type = 'drafts';getMails();">Drafts</button>
-                            <button mat-menu-item (click)="type = 'trash';getMails();">Trash</button>
-                        </span>
-          </mat-menu>-->
           <mat-nav-list class="p-0 mailbox-sidenav-list">
               <mat-selection-list [formControl]="tilesItemsCtrl" (selectionChange)="changeSelectedPatient()">
                 <mat-list-option
@@ -40,9 +28,7 @@
                 <mat-icon>list</mat-icon>
               </button>
             </div>
-            <!--<button mat-icon-button [matMenuTriggerFor]="moreMenu" #moreMenuTrigger="matMenuTrigger" [style.display]="(mail) ? 'block' : 'none'">
-              <mat-icon>more_vert</mat-icon>
-            </button>-->
+
             <button mat-icon-button [matMenuTriggerFor]="menu" class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
               <mat-icon>grid_on</mat-icon>
             </button>
@@ -53,13 +39,7 @@
               <button mat-menu-item (click)="setNumberOfDevicesOnScreen(1)">1</button>
             </mat-menu>
           </mat-toolbar>
-          <!--<mat-menu #moreMenu="matMenu" xPosition="before" overlapTrigger="true">
-                        <span (mouseleave)="moreMenuTrigger.closeMenu()">
-                            <button mat-menu-item (click)="setAsRead()">Mark as read</button>
-                            <button mat-menu-item (click)="setAsUnRead()">Mark as unread</button>
-                            <button mat-menu-item (click)="delete()">Delete</button>
-                        </span>
-          </mat-menu>-->
+
           <div class="mailbox-content">
             <div class="container">
               <mat-grid-list [cols]="colsNumber" [rowHeight]="rowHeight" >

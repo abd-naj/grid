@@ -74,33 +74,6 @@ export class MainPageComponent implements OnInit {
 
       return value
     }) );
-    // this.settings = this.appSettings.settings;
-
-    /*this.generalService.devices$.subscribe((value: any[]) => {
-      // console.log(value);
-      this.devices = value;
-      // console.log(this.tilesItemsCtrl.value?.length);
-      // console.log(this.generalService.numberOfDevicesOnScreen.getValue());
-      const selectedItems = this.tilesItemsCtrl.value;
-      if (value.length <= 16 && (this.tilesItemsCtrl.value?.length || 0) < 16) {
-      // if (value.length <= 16) {
-        const threads: any = [];
-        Object.assign(threads, value);
-        this.tilesItemsCtrl.setValue(threads)
-      }
-      this.deviceData = value;
-      // console.log(this.deviceData);
-      value.forEach((item, index) => {
-        this.generalService.threads[index]?.threads$?.subscribe(value => {
-          // console.log(value);
-          this.trigChange = !this.trigChange
-          if (!this.msgs[index]) {this.msgs[index] = []}
-          this.msgs[index] = value
-        });
-      })
-
-    });
-    */
 
     this.connectMqttServerService.createConnection().then(() => {
       // console.log(value);
@@ -174,17 +147,6 @@ export class MainPageComponent implements OnInit {
   }
 
   changeSelectedPatient() {
-    // this.selectedPatient = this.generalService.threads$.filter(x => x.patientId === )
-    /*this.selectedPatient = this.generalService.threads$.filter(function (o1) {
-      return !options.some(function (o2) {
-        return o1.patientId === o2.patientId; // return the ones with equal id
-      });
-    });*/
-// if you want to be more clever...
-//     const options = this.tilesItemsCtrl.value || [];
-    // console.log(options);
-    // this.selectedPatient = this.generalService.threads.filter(o1 => options.some((o2: any) => o1.patientId === o2.patientId));
-    // console.log(this.selectedPatient);
   }
 
 }

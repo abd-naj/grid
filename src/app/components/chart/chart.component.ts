@@ -134,20 +134,20 @@ ngOnChanges(changes: SimpleChanges) {
     switch (this.type) {
       case 'ECG': {
         color = 'green';
-        yAxisMax = 0;
+        yAxisMax = 250;
         yAxisMin = 0;
         break;
       }
       case 'SPO2': {
         color = 'red';
         yAxisMax = 0;
-        yAxisMin = 0;
+        yAxisMin = 100;
         break;
       }
       case 'RECP': {
         color = 'yellow';
         yAxisMax = 0;
-        yAxisMin = 0;
+        yAxisMin = 30;
         break;
       }
     }
