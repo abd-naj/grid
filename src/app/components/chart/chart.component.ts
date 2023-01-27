@@ -40,7 +40,9 @@ export class ChartComponent implements OnInit, OnChanges {
 
 ngOnChanges(changes: SimpleChanges) {
     // console.log(this.threadMsg);
-  this.time_observer();
+  if (this.threadMsg) {
+    this.time_observer();
+  }
     // console.log(this.threadMsg);
    /* this.currentTriggerValue = changes['trigger'].currentValue;
     this.previousPreviousValueValue = changes['trigger'].previousValue;
@@ -79,7 +81,7 @@ ngOnChanges(changes: SimpleChanges) {
     // console.log(this.threadMsg)
     switch (this.type) {
       case 'ECG': {
-        console.log(this.threadMsg)
+        // console.log(this.threadMsg)
         return this.threadMsg ? this.threadMsg.heartRate : 0;
         // break;
       }
@@ -126,8 +128,31 @@ ngOnChanges(changes: SimpleChanges) {
     if (this.chart) {
       this.chart.destroy();
     }
+    let color = '';
+    let yAxisMax = 50;
+    let yAxisMin = 0;
+    switch (this.type) {
+      case 'ECG': {
+        color = 'green';
+        yAxisMax = 0;
+        yAxisMin = 0;
+        break;
+      }
+      case 'SPO2': {
+        color = 'red';
+        yAxisMax = 0;
+        yAxisMin = 0;
+        break;
+      }
+      case 'RECP': {
+        color = 'yellow';
+        yAxisMax = 0;
+        yAxisMin = 0;
+        break;
+      }
+    }
     setTimeout(() => {
-      const chartColors = {
+      /*const chartColors = {
         red: 'rgb(255, 99, 132)',
         orange: 'rgb(255, 159, 64)',
         yellow: 'rgb(255, 205, 86)',
@@ -135,15 +160,15 @@ ngOnChanges(changes: SimpleChanges) {
         blue: 'rgb(54, 162, 235)',
         purple: 'rgb(153, 102, 255)',
         grey: 'rgb(201, 203, 207)'
-      };
+      };*/
       const config: any = {
         type: 'line',
         data: {
           datasets: [
             {
               label: '',
-              backgroundColor: chartColors.blue,
-              borderColor: chartColors.blue,
+              backgroundColor: color,
+              borderColor: color,
               fill: false,
               cubicInterpolationMode: 'monotone',
               data: []
@@ -152,7 +177,7 @@ ngOnChanges(changes: SimpleChanges) {
         options: {
           title: {
             display: true,
-            text: 'Line chart (horizontal scroll) sample'
+            text: ''
           },
           scales: {
             x: {
@@ -166,7 +191,6 @@ ngOnChanges(changes: SimpleChanges) {
                       x: Date.now(),
                       y: this.getMsgs()
                     });
-                    // console.log(dataset);
                   });
                 }
               },
@@ -179,7 +203,9 @@ ngOnChanges(changes: SimpleChanges) {
               title: {
                 display: false,
                 text: ''
-              }
+              },
+              // min: yAxisMin,
+              // max: yAxisMax,
             }
           },
           responsive: false,
@@ -212,9 +238,9 @@ ngOnChanges(changes: SimpleChanges) {
         this.ctx = this.canvas.getContext('2d');
 
         this.chart = new Chart(this.ctx, config);
-      }, 500)
+      }, 200)
 
-    }, 500)
+    }, 200)
   }
 
   private resizeChart() {
@@ -233,7 +259,6 @@ ngOnChanges(changes: SimpleChanges) {
       const time_now = new Date();
       const diff = time_now.getTime() - start_time.getTime(); // This will give difference in milliseconds
       if (diff >= 4000) {
-
         this.isOffline = true;
         this.heratRate = 0;
 
