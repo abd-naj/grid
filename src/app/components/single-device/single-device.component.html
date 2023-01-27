@@ -4,7 +4,7 @@
     <mat-grid-list cols="4" [rowHeight]="rowHeight">
       <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[0].color">
         <div style="color: green" class="measurement">
-          <app-chart  [threadMsg]="threadMsg" [type]="'ECG'" [trigger]="trigger"></app-chart>
+          <app-chart  [threadMsg]="ecgData" [type]="'ECG'" [trigger]="trigger" [threadIndex]="threadIndex"></app-chart>
         </div>
       </mat-grid-tile>
       <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[1].color">
@@ -21,7 +21,7 @@
       </mat-grid-tile>
       <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[3].color">
         <div style="color: red" class="measurement">
-          <app-chart [threadMsg]="threadMsg" [type]="'SPO2'" [trigger]="trigger"></app-chart>
+          <app-chart [threadMsg]="pulseData" [type]="'SPO2'" [trigger]="trigger" [threadIndex]="threadIndex"></app-chart>
         </div>
       </mat-grid-tile>
       <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[4].color">
@@ -33,18 +33,18 @@
       <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[5].color">
         <div style="color: white" class="measurement">
           <div class="measurement-unit" [class]="'unit-'+ numberOfDevicesOnScreen">C</div>
-          <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{temp|number}}</div>
+          <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{temp|number: '2.0-1'}}</div>
         </div>
       </mat-grid-tile>
       <mat-grid-tile colspan="3" rowspan="5" [style.background]="tiles[6].color">
         <div style="color: yellow" class="measurement">
-          <app-chart [threadMsg]="threadMsg" [type]="'RECP'" [trigger]="trigger"></app-chart>
+          <app-chart [threadMsg]="respiratoryData" [type]="'RECP'" [trigger]="trigger" [threadIndex]="threadIndex"></app-chart>
         </div>
       </mat-grid-tile>
       <mat-grid-tile colspan="1" rowspan="3" [style.background]="tiles[7].color">
         <div style="color: yellow" class="measurement">
           <div class="measurement-unit" [class]="'unit-'+ numberOfDevicesOnScreen">xxx</div>
-          <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{xxx}}</div>
+          <div class="measurement-value" [class]="'value-'+ numberOfDevicesOnScreen">{{resp}}</div>
         </div>
       </mat-grid-tile>
     </mat-grid-list>

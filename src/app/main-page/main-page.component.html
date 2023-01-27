@@ -6,7 +6,7 @@
       <mat-sidenav-container>
         <mat-sidenav #sidenav [opened]="sidenavOpen" [mode]="sidenavOpen ? 'side' : 'over'" class="mailbox-sidenav mat-elevation-z1">
           <mat-toolbar color="primary" class="p-0 toolbar" >
-            <input [(ngModel)]="searchText" type="text" placeholder="Search By Device ID..." class="search mat-elevation-z3">
+            <input [(ngModel)]="searchText" type="text" placeholder="Search By Patient ID..." class="search mat-elevation-z3">
             <!--<button mat-icon-button [matMenuTriggerFor]="filterMenu" #filterMenuTrigger="matMenuTrigger">
               <mat-icon>more_vert</mat-icon>
             </button>-->
@@ -23,7 +23,7 @@
           <mat-nav-list class="p-0 mailbox-sidenav-list">
               <mat-selection-list [formControl]="tilesItemsCtrl" (selectionChange)="changeSelectedPatient()">
                 <mat-list-option
-                  *ngFor="let item of devices, index as i"
+                  *ngFor="let item of threads$|async, index as i"
                   (click)="viewDetail(item, i)" [value]="item">
                   <div matLine>
                     <small>{{item.patientId}}</small>
@@ -64,10 +64,24 @@
             <div class="container">
               <mat-grid-list [cols]="colsNumber" [rowHeight]="rowHeight" >
 
+                <!--*ngFor="let tile of arrayOFNumber(numberOfDevicesOnScreen); index as i"-->
 
-                <!--*ngFor="let tile of tilesItemsCtrl.value| sliceArray: numberOfDevicesOnScreen; index as i"-->
                 <mat-grid-tile
-                *ngFor="let tile of arrayOFNumber(numberOfDevicesOnScreen); index as i"
+                *ngFor="let item of tilesItemsCtrl.value; index as i"
+                  [colspan]="1"
+                  [rowspan]="1">
+                  <div class="deviceItem-container">
+                    <div class="device-data">
+                      <app-single-device [threadMsg]="item" [trigChange]="trigChange"
+                                         [threadIndex]="i" ></app-single-device>
+                    </div>
+                    <!--                    <div class="overlay">-->
+                    <!--                      <div class="text"> <mat-icon  (click)="setNumberOfDevicesOnScreen(1)" class="fullscreen">fullscreen</mat-icon></div>-->
+                    <!--                    </div>-->
+                  </div>
+                </mat-grid-tile>
+                <mat-grid-tile
+                *ngFor="let tile of arrayOFNumber(); index as i"
                   [colspan]="1"
                   [rowspan]="1">
                   <div class="deviceItem-container">

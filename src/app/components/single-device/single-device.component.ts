@@ -22,7 +22,7 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
     // {text: '777', cols: 1, rows: 3, color: '#d75676'},
     // {text: '888', cols: 1, rows: 3, color: '#c2f1bd'},
   ];
-  @Input() threadMsg: any;
+  @Input() threadMsg: any //Thread1;
   @Input() threadIndex: number;
   @Input() trigChange = false;
   @Input() deviceIdInput: string;
@@ -37,7 +37,12 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
   nibp: string;
   spo2: number;
   temp: number;
-  xxx: number;
+  resp: number;
+  ecgData: any;
+  pulseData: any;
+  pressureData: any;
+  thermometerData: any;
+  respiratoryData: any;
   constructor(private generalService: GeneralService) {
     this.generalService.numberOfDevicesOnScreen.subscribe((value) => {
       this.numberOfDevicesOnScreen = value;
@@ -71,9 +76,9 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
       this.filterData();
       sessionStorage.setItem('time'+ this.threadIndex, new Date().toISOString());
       this.time_observer();
-      this.generalService.threads$[this.threadIndex]?.threads?.subscribe(value => {
-        this.deviceId = this.generalService.threads$[this.threadIndex]?.devicesId;
-        this.patientId = this.generalService.threads$[this.threadIndex]?.patientId;
+      /*this.generalService.threads[this.threadIndex]?.threads$?.subscribe(value => {
+        this.deviceId = this.generalService.threads[this.threadIndex]?.devicesId;
+        this.patientId = this.generalService.threads[this.threadIndex]?.patientId;
         // console.log(this.threadIndex, value.length);
         // this.threadMsg[0]= value
         // this.updateTimer('reset')
@@ -81,7 +86,7 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
         sessionStorage.setItem('time'+ this.threadIndex, new Date().toISOString());
         this.msgs = value;
         this.trigger = !this.trigger;
-      });
+      });*/
     }
   }
 
@@ -98,6 +103,11 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
         // this.updateTimer();
         // console.log('offline.....')
         this.isOffline = true;
+        this.heratRate = 0;
+        this.nibp = '';
+        this.spo2 = 0;
+        this.temp = 0;
+        this.resp = 0;
         clearInterval(refreshIntervalId);
       } else {
         this.isOffline = false;
@@ -108,18 +118,22 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
   }
 
   private filterData() {
-    console.log(this.trigger)
+    // console.log(this.trigger)
     // console.log(this.threadMsg)
-    if (this.threadMsg?.threads1.length > 0) {
-      const ecgData = this.threadMsg.threads1.filter((x: any) => x.type === 'ECG');
-      const pulseData = this.threadMsg.threads1.filter((x: any) => x.type === 'pulse');
-      const pressureData = this.threadMsg.threads1.filter((x: any) => x.type === 'pressure');
-      const thermometerData = this.threadMsg.threads1.filter((x: any) => x.type === 'thermometer');
-      this.heratRate = pulseData.length > 0 ? pulseData[pulseData.length - 1]?.pulseRate : 0;
-      this.nibp = pressureData.length > 0 ?( pressureData[pressureData.length - 1]?.highPressure  + '/' + pressureData[pulseData.length - 1]?.lowPressure) : '';
-      this.spo2 = pulseData.length > 0 ? pulseData[pulseData.length - 1]?.spO2 : 0;
-      this.temp = thermometerData.length > 0 ? thermometerData[thermometerData.length - 1]?.temperature : 0;
-      this.xxx = pressureData.length > 0 ? pressureData[pressureData.length - 1]?.meanPressure : 0;
+    if (this.threadMsg?.threads) {
+      this.ecgData = this.threadMsg.threads.ECG;
+      this.pulseData = this.threadMsg.threads.pulse;
+      this.pressureData = this.threadMsg.threads.pressure;
+      this.thermometerData = this.threadMsg.threads.thermometer;
+      this.respiratoryData = this.threadMsg.threads.respiratory;
+      this.heratRate = this.ecgData?  this.ecgData.heartRate : 0;
+      this.nibp = this.pressureData ?( this.pressureData.highPressure  + '/' + this.pressureData.lowPressure) : '';
+      this.spo2 = this.pulseData ? this.pulseData.spO2 : 0;
+      this.temp = this.thermometerData ? this.thermometerData?.temperature : 0;
+      this.resp = this.pressureData ? this.respiratoryData.value : 0;
+      this.trigger = !this.trigger;
+      this.deviceId = this.threadMsg.devicesId;
+      this.patientId = this.threadMsg.patientId;
       // console.log(this.heratRate)
       /*switch (this.type) {
         case 'ECG': {
@@ -140,7 +154,7 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
       this.nibp = '';
       this.spo2 = 0;
       this.temp = 0;
-      this.xxx = 0;
+      this.resp = 0;
     }
   }
 }

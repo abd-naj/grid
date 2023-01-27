@@ -23,3 +23,30 @@ export interface PressureDevice extends  Device {
   meanPressure: number;
 
 }
+
+export interface IThread {
+  ECG: {
+    heartRate: number;
+    restRate: number
+  };
+  deviceId: string;
+  pressure: {
+    cuffPressure: number;
+    highPressure: number;
+    lowPressure: number;
+    meanPressure: number
+  },
+  pulse: {
+    pulseRate: number;
+    spO2: number
+  };
+  respiratory: {
+    value: number
+  };
+  status: number;
+  thermometer: {
+    temperature: number
+  };
+  timestamp: string;
+  userId: string
+}

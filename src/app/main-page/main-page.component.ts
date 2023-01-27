@@ -1,11 +1,10 @@
 import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl} from "@angular/forms";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {DeviceData, GeneralService, Thread} from "../shared/general.service";
-import {ConnectStreamService} from "./connect-stream.service";
+import {DeviceData, GeneralService, Thread1} from "../shared/general.service";
 import {Tile} from "../components/main-panel/main-panel.component";
 import {ConnectMqttServerService} from "./connect-mqtt-server.service";
-import {MatListOption} from "@angular/material/list";
+import {map, Observable} from "rxjs";
 
 
 
@@ -48,6 +47,7 @@ export class MainPageComponent implements OnInit {
   public searchText: string;
   deviceData: any[];
   msgs: Array<any[]> = [];
+  threads$: Observable<Thread1[]>;
   devices: any[];
   trigChange = true;
   selectedPatient: any[] = [];
@@ -59,8 +59,24 @@ export class MainPageComponent implements OnInit {
     public generalService: GeneralService,
     private connectMqttServerService: ConnectMqttServerService
   ) {
+    this.threads$ = this.generalService.threads$.pipe(map((value) => {
+      // console.log(value)
+      const selected = this.tilesItemsCtrl.value;
+      const newValuesArray: Thread1[] = [];
+      selected?.forEach((o, index) => {
+        const newValues: Thread1[] = value.filter(x => x.devicesId === o.devicesId);
+        newValuesArray[index] = newValues[0];
+        if (selected?.length - 1 === index) {
+          this.tilesItemsCtrl.setValue(newValuesArray);
+          this.trigChange = !this.trigChange;
+        }
+      })
+
+      return value
+    }) );
     // this.settings = this.appSettings.settings;
-    this.generalService.devices$.subscribe((value: any[]) => {
+
+    /*this.generalService.devices$.subscribe((value: any[]) => {
       // console.log(value);
       this.devices = value;
       // console.log(this.tilesItemsCtrl.value?.length);
@@ -75,7 +91,7 @@ export class MainPageComponent implements OnInit {
       this.deviceData = value;
       // console.log(this.deviceData);
       value.forEach((item, index) => {
-        this.generalService.threads$[index]?.threads?.subscribe(value => {
+        this.generalService.threads[index]?.threads$?.subscribe(value => {
           // console.log(value);
           this.trigChange = !this.trigChange
           if (!this.msgs[index]) {this.msgs[index] = []}
@@ -84,6 +100,8 @@ export class MainPageComponent implements OnInit {
       })
 
     });
+    */
+
     this.connectMqttServerService.createConnection().then(() => {
       // console.log(value);
       this.connectMqttServerService.doSubscribe().subscribe(() => {
@@ -91,6 +109,7 @@ export class MainPageComponent implements OnInit {
       });
     });
     // this.getMails();
+
     this.generalService.numberOfDevicesOnScreen.subscribe((value: number) => {
       this.numberOfDevicesOnScreen = value;
       switch (value) {
@@ -124,12 +143,7 @@ export class MainPageComponent implements OnInit {
 
   ngOnInit() {
     this.tilesItemsCtrl.valueChanges.subscribe((value: any) => {
-      this.changeSelectedPatient();
-      // console.log(value)
-      // this.tilesItems = value;
-      // if (value.length <= this.numberOfDevicesOnScreen) {
-      //   this.tilesItems = value;
-      // }
+      // this.changeSelectedPatient();
     })
     if(window.innerWidth <= 992){
       // this.sidenavOpen = false;
@@ -141,7 +155,7 @@ export class MainPageComponent implements OnInit {
     // (window.innerWidth <= 992) ? this.sidenavOpen = false : this.sidenavOpen = true;
   }
 
-  public viewDetail(thread: Thread, index: number ){
+  public viewDetail(thread: Thread1, index: number ){
     thread.index = index;
   }
 
@@ -151,8 +165,12 @@ export class MainPageComponent implements OnInit {
     this.generalService.setNumberOfDevicesOnScreen(count);
   }
 
-  arrayOFNumber(numberOfDevicesOnScreen: number): Array<number>{
-    return Array(numberOfDevicesOnScreen).fill(0).map((x,i)=>i);
+  arrayOFNumber(): Array<number>{
+    let diff = 0;
+    if (this.numberOfDevicesOnScreen - (this.tilesItemsCtrl.value?.length || 0) > 0) {
+      diff = this.numberOfDevicesOnScreen - (this.tilesItemsCtrl.value?.length || 0)
+    }
+    return Array(diff).fill(0).map((x,i)=>i);
   }
 
   changeSelectedPatient() {
@@ -163,9 +181,9 @@ export class MainPageComponent implements OnInit {
       });
     });*/
 // if you want to be more clever...
-    const options = this.tilesItemsCtrl.value || [];
+//     const options = this.tilesItemsCtrl.value || [];
     // console.log(options);
-    this.selectedPatient = this.generalService.threads$.filter(o1 => options.some((o2: any) => o1.patientId === o2.patientId));
+    // this.selectedPatient = this.generalService.threads.filter(o1 => options.some((o2: any) => o1.patientId === o2.patientId));
     // console.log(this.selectedPatient);
   }
 

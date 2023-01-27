@@ -14,6 +14,7 @@ export class ChartComponent implements OnInit, OnChanges {
   @Input() threadMsg: any;
   @Input() trigger = false;
   @Input() type: string;
+  @Input() threadIndex: number;
   canvas: any;
   ctx: any;
   chart: Chart;
@@ -22,6 +23,9 @@ export class ChartComponent implements OnInit, OnChanges {
   spo2: number;
   temp: number;
   xxx: number;
+  currentTriggerValue: boolean;
+  previousPreviousValueValue: boolean;
+  private isOffline = true;
   @HostListener('window:resize', ['$event'])
   onResize() {
     // this.createChart();
@@ -35,7 +39,18 @@ export class ChartComponent implements OnInit, OnChanges {
   }
 
 ngOnChanges(changes: SimpleChanges) {
-    // this.threadMsg
+    // console.log(this.threadMsg);
+  this.time_observer();
+    // console.log(this.threadMsg);
+   /* this.currentTriggerValue = changes['trigger'].currentValue;
+    this.previousPreviousValueValue = changes['trigger'].previousValue;
+  if (this.currentTriggerValue === this.previousPreviousValueValue) {
+    console.log('same....')
+  } else {
+    console.log('not....')
+    this.previousPreviousValueValue = this.currentTriggerValue
+  }*/
+
 }
 
   ngOnInit(): void {
@@ -60,9 +75,25 @@ ngOnChanges(changes: SimpleChanges) {
 
 
   private getMsgs() {
-    // console.log(this.trigger)
+    if (this.isOffline) {return }
     // console.log(this.threadMsg)
-    if (this.threadMsg) {
+    switch (this.type) {
+      case 'ECG': {
+        console.log(this.threadMsg)
+        return this.threadMsg ? this.threadMsg.heartRate : 0;
+        // break;
+      }
+      case 'SPO2': {
+        return this.threadMsg  ? this.threadMsg.spO2 : 0;
+        // break;
+      }
+      case 'RECP': {
+        return this.threadMsg  ? this.threadMsg.value : 0;
+        // break;
+      }
+    }
+
+    /*if (this.threadMsg) {
       const ecgData = this.threadMsg.threads1.filter((x: any)=> x.type === 'ECG');
       const pulseData = this.threadMsg.threads1.filter((x: any) => x.type === 'pulse');
       const pressureData = this.threadMsg.threads1.filter((x: any)=> x.type === 'pressure');
@@ -87,7 +118,7 @@ ngOnChanges(changes: SimpleChanges) {
           // break;
         }
       }
-    }
+    }*/
     // return this.threadMsg ? this.threadMsg[this.threadMsg.length - 1].temperature : 0
   }
 
@@ -195,5 +226,21 @@ ngOnChanges(changes: SimpleChanges) {
         this.chart?.resize(elWidth, elHeight);
       }
     }, 200)
+  }
+  private time_observer() {
+    const refreshIntervalId = setInterval(() => {
+      const start_time = new Date(sessionStorage.getItem('time'+ this.threadIndex)?.toString() || '');
+      const time_now = new Date();
+      const diff = time_now.getTime() - start_time.getTime(); // This will give difference in milliseconds
+      if (diff >= 4000) {
+
+        this.isOffline = true;
+        this.heratRate = 0;
+
+        clearInterval(refreshIntervalId);
+      } else {
+        this.isOffline = false;
+      }
+    }, 2000);
   }
 }
