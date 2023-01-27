@@ -13,7 +13,7 @@ export class ConnectMqttServerService {
     port: 8884,
     clean: true,
     connectTimeout: 4000,
-    reconnectPeriod: 4000,
+    // reconnectPeriod: 4000,
     path: '/mqtt',
     clientId: '12345',
     username: 'bkhashfeh',
@@ -77,7 +77,7 @@ export class ConnectMqttServerService {
       const { topic, qos } = this.subscription
       this.curSubscription = this.client?.observe(topic, { qos } as IClientSubscribeOptions).subscribe((message: IMqttMessage) => {
         this.subscribeSuccess = true
-        // console.log(message.payload.toString())
+        console.log(message.payload.toString())
         // this.mm.push(message.payload.toString())
         console.log(1)
         this.generalService.pushThread(message.payload.toString())
