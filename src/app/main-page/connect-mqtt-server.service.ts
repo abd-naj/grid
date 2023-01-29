@@ -13,7 +13,7 @@ export class ConnectMqttServerService {
     port: 8884,
     clean: true,
     connectTimeout: 4000,
-    // reconnectPeriod: 4000,
+    reconnectPeriod: 4000,
     path: '/mqtt',
     clientId: '12345',
     username: 'bkhashfeh',

@@ -67,26 +67,19 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    setInterval(() => {
+      this.testTreadTime();
+    }, 4000)
   }
   ngOnChanges(changes: SimpleChanges) {
     // console.log(this.generalService.threads$);
     // console.log(this.threadMsg);
     // console.log(this.threadIndex)
     if (this.threadIndex >= 0) {
+      // console.log(this.threadMsg);
       this.filterData();
-      sessionStorage.setItem('time'+ this.threadIndex, new Date().toISOString());
-      this.time_observer();
-      /*this.generalService.threads[this.threadIndex]?.threads$?.subscribe(value => {
-        this.deviceId = this.generalService.threads[this.threadIndex]?.devicesId;
-        this.patientId = this.generalService.threads[this.threadIndex]?.patientId;
-        // console.log(this.threadIndex, value.length);
-        // this.threadMsg[0]= value
-        // this.updateTimer('reset')
-        this.time_observer();
-        sessionStorage.setItem('time'+ this.threadIndex, new Date().toISOString());
-        this.msgs = value;
-        this.trigger = !this.trigger;
-      });*/
+      // sessionStorage.setItem('time'+ this.threadIndex, new Date().toISOString());
+      // this.time_observer();
     }
   }
 
@@ -109,8 +102,10 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
         this.temp = 0;
         this.resp = 0;
         clearInterval(refreshIntervalId);
+        this.generalService.updateSelectedThreadStatus(this.threadMsg, 'unActive')
       } else {
         this.isOffline = false;
+        this.generalService.updateSelectedThreadStatus(this.threadMsg, 'isActive')
         // this.deviceId = '';
         // this.patientId = '';
       }
@@ -144,7 +139,7 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
           return pulseData ? pulseData.slice(-1)[0].spO2 : 0;
           // break;
         }
-        case 'RECP': {
+        case 'RESP': {
           return pressureData ? pressureData.slice(-1)[0].meanPressure : 0;
           // break;
         }
@@ -156,5 +151,29 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
       this.temp = 0;
       this.resp = 0;
     }
+  }
+
+  private testTreadTime() {
+    // console.log(this.threadMsg)
+    if (this.threadMsg) {
+      if ((new Date().getTime() - new Date(this.threadMsg?.threads.timestamp).getTime() > 4000)) {
+        this.isOffline = true;
+        this.heratRate = 0;
+        this.nibp = '';
+        this.spo2 = 0;
+        this.temp = 0;
+        this.resp = 0;
+      } else {
+        this.isOffline = false;
+      }
+    } else {
+      this.isOffline = true;
+      this.heratRate = 0;
+      this.nibp = '';
+      this.spo2 = 0;
+      this.temp = 0;
+      this.resp = 0;
+    }
+
   }
 }

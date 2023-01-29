@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import {IThread} from "./models/devices.model";
 
 export interface IDeviceData{
@@ -34,18 +34,13 @@ export class DeviceData {
     this.userId = userId1;
   }
 }
-export class Thread {
-  threads$: BehaviorSubject<any>;
-  threads1: any[];
-  devicesId: string;
-  patientId: string;
-  index: number
-}
 export class Thread1 {
   threads:IThread[];
   devicesId: string;
   patientId: string;
   index: number;
+  isActive = true;
+  isSelected = false;
   constructor() {
     this.threads = new Array<IThread>();
   }
@@ -56,39 +51,52 @@ export class Thread1 {
 })
 export class GeneralService {
   numberOfDevicesOnScreen: BehaviorSubject<number> = new BehaviorSubject<number>(8);
-  // threads: Array<Thread> = new Array<any>();
   threads$: BehaviorSubject<Thread1[]> = new BehaviorSubject(new Array<Thread1>());
   devices$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([])
   constructor() { }
   setNumberOfDevicesOnScreen(count: number): void {
     this.numberOfDevicesOnScreen.next(count);
   }
+  testActivated: Subject<any> = new BehaviorSubject<any>(null);
+
+   public updateSelectedThreadStatus(thread: any, type: string): void {
+     // console.log(thread);
+     if (thread) {
+       const threads = this.threads$.getValue();
+       threads[thread.index].isActive = type !== 'unActive';
+     }
+   }
+   public updateActivatedThreadsStatus(): void {
+       const threads = this.threads$.getValue();
+       // threads[thread.index].isActive = false;
+   }
+  public deleteThread(thread: any): void {
+    // console.log(thread);
+    if (thread) {
+      const threads = this.threads$.getValue();
+      threads.splice(thread.index, 1);
+    }
+  }
   pushThread(thread: any): void {
     const theadJson = JSON.parse(thread);
-    // console.log(thread);
-    // console.log(theadJson);
     const devicesIds = this.devices$.getValue();
     const deviceIndex = devicesIds.findIndex(x => x.deviceId === theadJson.deviceId);
     if (deviceIndex >= 0) {
-      // const threadIndex = this.threads.findIndex(x => x.devicesId === theadJson.deviceId);
-      // const threadIndex = theadJson.deviceId;
       const threadMsgs = this.threads$.getValue() || [];
-      // const threadMsgsIndex = threadMsgs.findIndex(x => x.devicesId === theadJson.deviceId);
-      // console.log(deviceIndex)
-      // console.log(threadMsgs)
+      theadJson.isActive = true;
       threadMsgs[deviceIndex].threads = theadJson;
-      // const lastThreadMsg = threadMsg.slice(-6);
-      // this.threads[threadIndex].threads1 = this.threads[threadIndex].threads1.slice(-6);
-      // console.log(threadMsg);
-      // console.log(threadIndex);
-      // lastThreadMsg.push(theadJson);
       this.threads$.next(threadMsgs);
-      // this.threads$[threadIndex].threads1.push(theadJson);
-      // console.log(this.threads$[threadIndex]);
     } else {
       devicesIds.push(theadJson);
       const threadMsgs = this.threads$.getValue() || [];
-      threadMsgs.push({threads: [theadJson], devicesId: theadJson.deviceId, index: this.threads$.getValue().length, patientId: theadJson.userId})
+      threadMsgs.push({
+        threads: [theadJson],
+        devicesId: theadJson.deviceId,
+        index: this.threads$.getValue().length,
+        patientId: theadJson.userId,
+        isActive: true,
+        isSelected: false
+      })
       this.threads$.next(threadMsgs);
       this.devices$.next(devicesIds);
     }

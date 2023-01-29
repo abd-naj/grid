@@ -9,12 +9,16 @@
             <input [(ngModel)]="searchText" type="text" placeholder="Search By Patient ID..." class="search mat-elevation-z3">
           </mat-toolbar>
           <mat-nav-list class="p-0 mailbox-sidenav-list">
-              <mat-selection-list [formControl]="tilesItemsCtrl" (selectionChange)="changeSelectedPatient()">
+              <mat-selection-list [formControl]="tilesItemsCtrl" (selectionChange)="changeSelectedPatient($event)">
                 <mat-list-option
                   *ngFor="let item of threads$|async, index as i"
                   (click)="viewDetail(item, i)" [value]="item">
                   <div matLine>
-                    <small>{{item.patientId}}</small>
+                    <div class="filter-row">
+                      <small>{{item.patientId}}</small>
+                      <mat-icon style="color: red" *ngIf="!item.isActive">wifi_off</mat-icon>
+                    </div>
+
                   </div>
                 </mat-list-option>
               </mat-selection-list>
@@ -33,7 +37,7 @@
               <mat-icon>grid_on</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="setNumberOfDevicesOnScreen(16)">16</button>
+             <!-- <button mat-menu-item (click)="setNumberOfDevicesOnScreen(16)">16</button>-->
               <button mat-menu-item (click)="setNumberOfDevicesOnScreen(8)">8</button>
               <button mat-menu-item (click)="setNumberOfDevicesOnScreen(4)">4</button>
               <button mat-menu-item (click)="setNumberOfDevicesOnScreen(1)">1</button>
@@ -47,7 +51,7 @@
                 <!--*ngFor="let tile of arrayOFNumber(numberOfDevicesOnScreen); index as i"-->
 
                 <mat-grid-tile
-                *ngFor="let item of tilesItemsCtrl.value; index as i"
+                *ngFor="let item of tilesItemsCtrl.value|sliceArray: numberOfDevicesOnScreen: selectedPatientDevice; index as i"
                   [colspan]="1"
                   [rowspan]="1">
                   <div class="deviceItem-container">
@@ -55,9 +59,10 @@
                       <app-single-device [threadMsg]="item" [trigChange]="trigChange"
                                          [threadIndex]="i" ></app-single-device>
                     </div>
-                    <!--                    <div class="overlay">-->
-                    <!--                      <div class="text"> <mat-icon  (click)="setNumberOfDevicesOnScreen(1)" class="fullscreen">fullscreen</mat-icon></div>-->
-                    <!--                    </div>-->
+                    <!--   <div class="overlay">
+                             <div class="text"> <mat-icon  (click)="setNumberOfDevicesOnScreen(1)" class="fullscreen">fullscreen</mat-icon></div>
+                           </div>-->
+                    <div><mat-icon (click)="setNumberOfDevicesOnScreen(1, i)" class="zoom-in">zoom_in</mat-icon></div>
                   </div>
                 </mat-grid-tile>
                 <mat-grid-tile
@@ -66,13 +71,13 @@
                   [rowspan]="1">
                   <div class="deviceItem-container">
                     <div class="device-data">
-<!--                      <div>{{deviceData[i].userId}}</div>-->
                       <app-single-device [threadMsg]="selectedPatient[i]" [trigChange]="trigChange"
                                          [threadIndex]="i" ></app-single-device>
                     </div>
-<!--                    <div class="overlay">-->
-<!--                      <div class="text"> <mat-icon  (click)="setNumberOfDevicesOnScreen(1)" class="fullscreen">fullscreen</mat-icon></div>-->
-<!--                    </div>-->
+                    <!--<div class="overlay">
+                      <div class="text"> <mat-icon  (click)="setNumberOfDevicesOnScreen(1)" class="fullscreen">fullscreen</mat-icon></div>
+                    </div>-->
+                    <div><mat-icon (click)="setNumberOfDevicesOnScreen(1)" class="zoom-in">zoom_in</mat-icon></div>
                   </div>
                 </mat-grid-tile>
               </mat-grid-list>

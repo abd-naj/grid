@@ -51,6 +51,8 @@ export class MainPageComponent implements OnInit {
   devices: any[];
   trigChange = true;
   selectedPatient: any[] = [];
+  selectedPatientDevice: number;
+  private manualChaneSelectPatient: boolean;
 
   constructor(
     // public appSettings:AppSettings,
@@ -59,9 +61,23 @@ export class MainPageComponent implements OnInit {
     public generalService: GeneralService,
     private connectMqttServerService: ConnectMqttServerService
   ) {
+    sessionStorage.setItem('update-status-time', new Date().toISOString());
+    // this.time_observer();
     this.threads$ = this.generalService.threads$.pipe(map((value) => {
       // console.log(value)
+      // add new connected device auto
       const selected = this.tilesItemsCtrl.value;
+      value.forEach((item: any) => {
+        const deviceIndex = selected?.find(x => x.devicesId === item.devicesId) ;
+        if (((this.tilesItemsCtrl.value?.length || 0) < 8) && !deviceIndex && !item.isSelected && !this.manualChaneSelectPatient) {
+          item.isSelected = true;
+          selected?.push(item);
+        }
+        /*if ((new Date().getTime() - new Date(item.threads.timestamp).getTime() > 10000) && !item.isSelected) {
+          selected?.splice(deviceIndex, 1);
+        }*/
+      })
+      /////
       const newValuesArray: Thread1[] = [];
       selected?.forEach((o, index) => {
         const newValues: Thread1[] = value.filter(x => x.devicesId === o.devicesId);
@@ -70,6 +86,8 @@ export class MainPageComponent implements OnInit {
           this.tilesItemsCtrl.setValue(newValuesArray);
           this.trigChange = !this.trigChange;
         }
+
+
       })
 
       return value
@@ -134,8 +152,9 @@ export class MainPageComponent implements OnInit {
 
 
 
-  setNumberOfDevicesOnScreen(count: number) {
+  setNumberOfDevicesOnScreen(count: number, index = -1) {
     this.generalService.setNumberOfDevicesOnScreen(count);
+    this.selectedPatientDevice = index;
   }
 
   arrayOFNumber(): Array<number>{
@@ -146,7 +165,26 @@ export class MainPageComponent implements OnInit {
     return Array(diff).fill(0).map((x,i)=>i);
   }
 
-  changeSelectedPatient() {
+  changeSelectedPatient(event: any) {
+    // console.log(event);
+    this.manualChaneSelectPatient = true;
+    if (event.options[0].selected) {return}
+    const value = event.options[0].value;
+    if (!value.isActive) {
+      this.generalService.deleteThread(value);
+    }
+  }
+  private time_observer() {
+    const refreshIntervalId = setInterval(() => {
+      const start_time = new Date(sessionStorage.getItem('update-status-time')?.toString() || '');
+      const time_now = new Date();
+      const diff = time_now.getTime() - start_time.getTime(); // This will give difference in milliseconds
+      if (diff >= 4000) {
+        clearInterval(refreshIntervalId);
+        this.generalService.updateActivatedThreadsStatus()
+      } else {
+      }
+    }, 2000);
   }
 
 }

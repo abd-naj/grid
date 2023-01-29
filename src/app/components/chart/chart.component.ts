@@ -14,6 +14,7 @@ export class ChartComponent implements OnInit, OnChanges {
   @Input() threadMsg: any;
   @Input() trigger = false;
   @Input() type: string;
+  // @Input() isOffline = true;
   @Input() threadIndex: number;
   canvas: any;
   ctx: any;
@@ -41,6 +42,7 @@ export class ChartComponent implements OnInit, OnChanges {
 ngOnChanges(changes: SimpleChanges) {
     // console.log(this.threadMsg);
   if (this.threadMsg) {
+    sessionStorage.setItem('time'+ this.threadIndex, new Date().toISOString());
     this.time_observer();
   }
     // console.log(this.threadMsg);
@@ -79,9 +81,9 @@ ngOnChanges(changes: SimpleChanges) {
   private getMsgs() {
     if (this.isOffline) {return }
     // console.log(this.threadMsg)
+    console.log('1')
     switch (this.type) {
       case 'ECG': {
-        // console.log(this.threadMsg)
         return this.threadMsg ? this.threadMsg.heartRate : 0;
         // break;
       }
@@ -89,7 +91,7 @@ ngOnChanges(changes: SimpleChanges) {
         return this.threadMsg  ? this.threadMsg.spO2 : 0;
         // break;
       }
-      case 'RECP': {
+      case 'RESP': {
         return this.threadMsg  ? this.threadMsg.value : 0;
         // break;
       }
@@ -115,7 +117,7 @@ ngOnChanges(changes: SimpleChanges) {
           return pulseData.length > 0  ? pulseData[pulseData.length - 1]?.spO2 : 0;
           // break;
         }
-        case 'RECP': {
+        case 'RESP': {
           return pressureData.length > 0  ? pressureData[pressureData.length - 1]?.meanPressure : 0;
           // break;
         }
@@ -144,7 +146,7 @@ ngOnChanges(changes: SimpleChanges) {
         yAxisMin = 100;
         break;
       }
-      case 'RECP': {
+      case 'RESP': {
         color = 'yellow';
         yAxisMax = 0;
         yAxisMin = 30;
@@ -183,8 +185,11 @@ ngOnChanges(changes: SimpleChanges) {
             x: {
               type: 'realtime',
               realtime: {
-                duration: 20000,
-                delay: 1000,
+                duration: 30000,
+                // refresh: 700,
+                // delay: 10,
+                frameRate: 30,
+                ttl: undefined,
                 onRefresh: () => {
                   this.chart.config.data.datasets.forEach((dataset: any) => {
                     dataset.data.push({
@@ -220,7 +225,10 @@ ngOnChanges(changes: SimpleChanges) {
           plugins: {
             legend: {
               display: false
-            }
+            },
+            // streaming: {
+            //   frameRate: 5   // chart is drawn 5 times every second
+            // }
           },
           // responsive: true,
           maintainAspectRatio: false,
@@ -238,7 +246,7 @@ ngOnChanges(changes: SimpleChanges) {
         this.ctx = this.canvas.getContext('2d');
 
         this.chart = new Chart(this.ctx, config);
-      }, 200)
+      }, 100)
 
     }, 200)
   }
