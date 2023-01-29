@@ -27,6 +27,7 @@ export class ChartComponent implements OnInit, OnChanges {
   currentTriggerValue: boolean;
   previousPreviousValueValue: boolean;
   private isOffline = true;
+
   @HostListener('window:resize', ['$event'])
   onResize() {
     // this.createChart();
@@ -39,26 +40,26 @@ export class ChartComponent implements OnInit, OnChanges {
     })
   }
 
-ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges) {
     // console.log(this.threadMsg);
-  if (this.threadMsg) {
-    sessionStorage.setItem('time'+ this.threadIndex, new Date().toISOString());
-    this.time_observer();
-  }
+    if (this.threadMsg) {
+      sessionStorage.setItem('time' + this.threadIndex, new Date().toISOString());
+      this.time_observer();
+    }
     // console.log(this.threadMsg);
-   /* this.currentTriggerValue = changes['trigger'].currentValue;
-    this.previousPreviousValueValue = changes['trigger'].previousValue;
-  if (this.currentTriggerValue === this.previousPreviousValueValue) {
-    console.log('same....')
-  } else {
-    console.log('not....')
-    this.previousPreviousValueValue = this.currentTriggerValue
-  }*/
+    /* this.currentTriggerValue = changes['trigger'].currentValue;
+     this.previousPreviousValueValue = changes['trigger'].previousValue;
+   if (this.currentTriggerValue === this.previousPreviousValueValue) {
+     console.log('same....')
+   } else {
+     console.log('not....')
+     this.previousPreviousValueValue = this.currentTriggerValue
+   }*/
 
-}
+  }
 
   ngOnInit(): void {
-   this.createChart();
+    this.createChart();
     // window.addEventListener('afterprint', () => {
     //   this.chart.resize();
     // });
@@ -68,18 +69,20 @@ ngOnChanges(changes: SimpleChanges) {
   //   return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
   // }
 
-/*  onRefresh(chart) {
-    chart.config.data.datasets.forEach(function(dataset) {
-      dataset.data.push({
-        x: Date.now(),
-        y: randomScalingFactor()
+  /*  onRefresh(chart) {
+      chart.config.data.datasets.forEach(function(dataset) {
+        dataset.data.push({
+          x: Date.now(),
+          y: randomScalingFactor()
+        });
       });
-    });
-  }*/
+    }*/
 
 
   private getMsgs() {
-    if (this.isOffline) {return }
+    if (this.isOffline) {
+      return
+    }
     // console.log(this.threadMsg)
     console.log('1')
     switch (this.type) {
@@ -88,11 +91,11 @@ ngOnChanges(changes: SimpleChanges) {
         // break;
       }
       case 'SPO2': {
-        return this.threadMsg  ? this.threadMsg.spO2 : 0;
+        return this.threadMsg ? this.threadMsg.spO2 : 0;
         // break;
       }
       case 'RESP': {
-        return this.threadMsg  ? this.threadMsg.value : 0;
+        return this.threadMsg ? this.threadMsg.value : 0;
         // break;
       }
     }
@@ -185,16 +188,16 @@ ngOnChanges(changes: SimpleChanges) {
             x: {
               type: 'realtime',
               realtime: {
-                duration: 30000,
-                // refresh: 700,
-                // delay: 10,
-                frameRate: 30,
+                duration: 20000,
+                refresh: 500,
+                delay: 200,
+                frameRate: 10,
                 ttl: undefined,
                 onRefresh: () => {
                   this.chart.config.data.datasets.forEach((dataset: any) => {
                     dataset.data.push({
                       x: Date.now(),
-                      y: this.getMsgs()
+                      y: this.generateThreads(this.type) //this.getMsgs()
                     });
                   });
                 }
@@ -233,15 +236,15 @@ ngOnChanges(changes: SimpleChanges) {
           // responsive: true,
           maintainAspectRatio: false,
           elements: {
-            point:{
+            point: {
               radius: 0
             }
           }
         }
       };
       this.canvas = document.getElementById(this.canvasId);
-      this.canvas.style.width ='100%';
-      this.canvas.style.height='100%';
+      this.canvas.style.width = '100%';
+      this.canvas.style.height = '100%';
       setTimeout(() => {
         this.ctx = this.canvas.getContext('2d');
 
@@ -261,9 +264,10 @@ ngOnChanges(changes: SimpleChanges) {
       }
     }, 200)
   }
+
   private time_observer() {
     const refreshIntervalId = setInterval(() => {
-      const start_time = new Date(sessionStorage.getItem('time'+ this.threadIndex)?.toString() || '');
+      const start_time = new Date(sessionStorage.getItem('time' + this.threadIndex)?.toString() || '');
       const time_now = new Date();
       const diff = time_now.getTime() - start_time.getTime(); // This will give difference in milliseconds
       if (diff >= 4000) {
@@ -275,5 +279,26 @@ ngOnChanges(changes: SimpleChanges) {
         this.isOffline = false;
       }
     }, 2000);
+  }
+
+   private generateThreadsValue(min: number, max: number) { // min and max included
+     return Math.floor(Math.random() * (max - min + 1) + min)
+   }
+  private generateThreads(type: string) { // min and max included
+    switch (this.type) {
+      case 'ECG': {
+        return this.generateThreadsValue(60, 120);
+        // break;
+      }
+      case 'SPO2': {
+        return this.generateThreadsValue(80, 100);
+        // break;
+      }
+      case 'RESP': {
+        return this.generateThreadsValue(15, 20);
+        // break;
+      }
+      // return Math.floor(Math.random() * (max - min + 1) + min)
+    }
   }
 }
