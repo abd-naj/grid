@@ -53,7 +53,11 @@ export class GeneralService {
   numberOfDevicesOnScreen: BehaviorSubject<number> = new BehaviorSubject<number>(8);
   threads$: BehaviorSubject<Thread1[]> = new BehaviorSubject(new Array<Thread1>());
   devices$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([])
-  constructor() { }
+  constructor() {
+    // this.generateThreads(10);
+    // this.setDeceleratingTimeout(function(){ console.log('hi'); }, 10, 1000);
+
+  }
   setNumberOfDevicesOnScreen(count: number): void {
     this.numberOfDevicesOnScreen.next(count);
   }
@@ -79,6 +83,7 @@ export class GeneralService {
   }
   pushThread(thread: any): void {
     const theadJson = JSON.parse(thread);
+    // console.log(theadJson);
     const devicesIds = this.devices$.getValue();
     const deviceIndex = devicesIds.findIndex(x => x.deviceId === theadJson.deviceId);
     if (deviceIndex >= 0) {
@@ -101,4 +106,61 @@ export class GeneralService {
       this.devices$.next(devicesIds);
     }
   }
+
+  private generateThreadsValue(min: number, max: number) { // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
+  private generateThreads(devicesCount = 8, threadsPerSec = 1){
+    /*setInterval(() => {
+      for (const x of Array(devicesCount).keys()) {
+        console.log(1)
+        setTimeout(() => {
+          this.generateOnThread(x, x);
+        }, 10);
+      }
+    }, (threadsPerSec * 1000) );*/
+
+  }
+  setDeceleratingTimeout(callback: any, factor: any, times: any) {
+   /* const internalCallback = (tick: any, counter: any) => {
+      return () => {
+        if (--tick >= 0) {
+          window.setTimeout(internalCallback, ++counter * factor);
+          // callback();
+        }
+      }
+    }(times, 0);
+
+    window.setTimeout(internalCallback, factor);*/
+  };
+  private generateOnThread(deviceIndex: number, userIndex: number) {
+    const  thread = {
+        ECG: {
+          heartRate: this.generateThreadsValue(15, 20),
+          restRate: this.generateThreadsValue(15, 20)
+        },
+        deviceId: 'device-' + deviceIndex,
+        pressure: {
+          cuffPressure: this.generateThreadsValue(15, 20),
+          highPressure: this.generateThreadsValue(15, 20),
+          lowPressure: this.generateThreadsValue(15, 20),
+          meanPressure: this.generateThreadsValue(15, 20),
+        },
+        pulse: {
+          pulseRate: this.generateThreadsValue(15, 20),
+          spO2: this.generateThreadsValue(15, 20),
+        },
+        respiratory: {
+          value: this.generateThreadsValue(15, 20),
+        },
+        status: 1,
+        thermometer: {
+          temperature: this.generateThreadsValue(15, 20),
+        },
+        timestamp: new Date().toISOString(),
+        userId: 'user-' + userIndex,
+      }
+    this.pushThread(JSON.stringify(thread));
+  }
 }
+

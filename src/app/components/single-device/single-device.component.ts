@@ -67,9 +67,9 @@ export class SingleDeviceComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    setInterval(() => {
+    /*setInterval(() => {
       this.testTreadTime();
-    }, 4000)
+    }, 4000)*/
   }
   ngOnChanges(changes: SimpleChanges) {
     // console.log(this.generalService.threads$);

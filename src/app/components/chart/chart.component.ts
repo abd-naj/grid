@@ -84,7 +84,7 @@ export class ChartComponent implements OnInit, OnChanges {
       return
     }
     // console.log(this.threadMsg)
-    console.log('1')
+    // console.log('1')
     switch (this.type) {
       case 'ECG': {
         return this.threadMsg ? this.threadMsg.heartRate : 0;
@@ -197,7 +197,7 @@ export class ChartComponent implements OnInit, OnChanges {
                   this.chart.config.data.datasets.forEach((dataset: any) => {
                     dataset.data.push({
                       x: Date.now(),
-                      y: this.generateThreads(this.type) //this.getMsgs()
+                      y: this.getMsgs() //this.getMsgs()
                     });
                   });
                 }
@@ -279,26 +279,5 @@ export class ChartComponent implements OnInit, OnChanges {
         this.isOffline = false;
       }
     }, 2000);
-  }
-
-   private generateThreadsValue(min: number, max: number) { // min and max included
-     return Math.floor(Math.random() * (max - min + 1) + min)
-   }
-  private generateThreads(type: string) { // min and max included
-    switch (this.type) {
-      case 'ECG': {
-        return this.generateThreadsValue(60, 120);
-        // break;
-      }
-      case 'SPO2': {
-        return this.generateThreadsValue(80, 100);
-        // break;
-      }
-      case 'RESP': {
-        return this.generateThreadsValue(15, 20);
-        // break;
-      }
-      // return Math.floor(Math.random() * (max - min + 1) + min)
-    }
   }
 }
